@@ -3,6 +3,8 @@ import Fastify, { FastifyRequest } from "fastify"
 import { readFile, writeFile } from "fs/promises"
 import axios from "axios"
 import qs from "querystring"
+import cors from "@fastify/cors"
+
 import { SigningStargateClient, StargateClient } from "@cosmjs/stargate"
 
 import {getSignerFromMnemonic} from "./helper"
@@ -237,6 +239,7 @@ const start = async () => {
     fastify.log.info(await context.decoGitClient.getAllBalances(address))
 
     // fastify listen
+    await fastify.register(cors)
     await fastify.listen({ port, host: "0.0.0.0" })
   } catch (err) {
     fastify.log.error(err)
