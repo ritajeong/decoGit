@@ -25,7 +25,7 @@ export const ProfileCard: React.FC<IProfileCardProps> = ({ dummy }) => {
               <div className="pt-6 text-base font-bold">
                 <div className="flex justify-center">
                   <span className="bg-[url('/assets/github/planet.svg')] bg-center bg-cover w-6 h-6"></span>
-                  <span className="pl-2">{decoBalance}</span>
+                  <span className="pl-2">{decoBalance} DECO</span>
                   <span className="ml-6 bg-[url('/assets/github/sticker.svg')] bg-center bg-cover w-6 h-6"></span>
                   <span className="pl-2">64</span>
                 </div>
