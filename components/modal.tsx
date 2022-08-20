@@ -1,4 +1,3 @@
-import { useTheme } from "@emotion/react";
 import styled from "@emotion/styled";
 import { transparentize } from "polished";
 import React, { PropsWithChildren, useEffect, useState } from "react";
@@ -35,7 +34,7 @@ const ModalBackdrop = styled.div`
   left: 0;
   right: 0;
   bottom: 0;
-  background: ${({ theme }) => transparentize(0.5, "white")};
+  background: ${transparentize(0.5, "white")};
   backdrop-filter: blur(2px);
 `;
 
@@ -74,11 +73,11 @@ const ModalTitle = styled.div<ModalTitleProps>`
   height: ${({ backgroundFill }) => (backgroundFill ? "48px" : "0")};
   padding: 0 16px;
   flex-shrink: 0;
-  background-color: ${({ backgroundFill, theme }) => (backgroundFill ? "white" : "transparent")};
+  background-color: ${({ backgroundFill }) => (backgroundFill ? "white" : "transparent")};
 `;
 
 const ModalCloseIcon = styled.span`
-  color: ${({ theme }) => "#929292"};
+  color: #929292;
   font-size: 2rem;
   vertical-align: top;
   cursor: pointer;
@@ -119,7 +118,6 @@ const Modal: React.FC<PropsWithChildren<Props>> = (props) => {
     recieveClicks: props.isOpen,
     display: props.isOpen,
   });
-  const theme = useTheme();
 
   useEffect(() => {
     if (typeof document !== "undefined") {
