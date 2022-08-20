@@ -1,30 +1,69 @@
 import type { NextPage } from "next";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Layout } from "../components/layout";
 import { MainButton } from "../components/mainButton";
+import { Keplr } from "@keplr-wallet/types";
+import { getKeplrFromWindow } from "@keplr-wallet/stores";
+import { chainInfo } from "../config/chain";
+
+const KeyAccountAutoConnect = "account_auto_connect";
 
 const Home: NextPage = () => {
   const [login, setLogin] = useState(false);
   const [github, setGithub] = useState(false);
-  const handleSignin = () => {
-    // 화면 분기용 테스트코드
-    // localStorage.setItem("token");
-    console.log("clicked signout");
-    setLogin(true);
+  const [keplr, setKeplr] = useState<Keplr | null>(null);
+  const [bech32Address, setBech32Address] = useState<string>("");
+
+  const connectWallet = async () => {
+    try {
+      const newKeplr = await getKeplrFromWindow();
+      if (!newKeplr) {
+        throw new Error("Keplr extension not found");
+      }
+
+      await newKeplr.experimentalSuggestChain(chainInfo);
+      await newKeplr.enable(chainInfo.chainId);
+
+      localStorage?.setItem(KeyAccountAutoConnect, "true");
+      setKeplr(newKeplr);
+
+      setLogin(true); // TODO : change to global state
+      console.log("login success");
+    } catch (e) {
+      alert(e);
+    }
   };
   const handleSignout = () => {
-    // localStorage.removeItem("token");
-    console.log("clicked signout");
+    localStorage?.removeItem(KeyAccountAutoConnect);
+    setKeplr(null);
     setLogin(false);
+    setBech32Address("");
+    console.log("logout success");
   };
   const handleGithub = () => {
     console.log("connected github");
     setGithub(true);
   };
 
+  useEffect(() => {
+    const shouldAutoConnectAccount = localStorage?.getItem(KeyAccountAutoConnect) != null;
+
+    const geyKeySetAccountInfo = async () => {
+      if (keplr) {
+        const key = await keplr.getKey(chainInfo.chainId);
+        setBech32Address(key.bech32Address);
+      }
+    };
+
+    if (shouldAutoConnectAccount) {
+      connectWallet();
+    }
+    geyKeySetAccountInfo();
+  }, [keplr]);
+
   return (
     <>
-      <Layout login={login} handleSignout={handleSignout} handleSignin={handleSignin}>
+      <Layout login={login} handleSignout={handleSignout} bech32Address={bech32Address} connectWallet={connectWallet}>
         <section className="z-0 flex flex-col items-center w-full h-screen pt-32">
           {/* center labtop image */}
           <div className="z-50 w-[320px] h-[200px] lg:w-[32vw] lg:h-[20vw] laptop shrink-0"></div>
