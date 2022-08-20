@@ -4,6 +4,12 @@ import { useState } from "react";
 
 const Home: NextPage = () => {
   const [login, setLogin] = useState(false);
+  const handleSignin = () => {
+    // 화면 분기용 테스트코드
+    // localStorage.setItem("token");
+    console.log("clicked signout");
+    setLogin(true);
+  };
   const handleSignout = () => {
     // localStorage.removeItem("token");
     console.log("clicked signout");
@@ -12,7 +18,7 @@ const Home: NextPage = () => {
 
   return (
     <>
-      <Layout login={login} handleSignout={handleSignout}>
+      <Layout login={login} handleSignout={handleSignout} handleSignin={handleSignin}>
         <section className="z-0 flex flex-col items-center w-full h-screen pt-40">
           <div className="z-50 laptop"></div>
           {login && <p className="z-50 pt-10 text-5xl font-black text-black uppercase">login with github</p>}
