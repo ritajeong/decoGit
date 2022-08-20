@@ -1,9 +1,11 @@
 import type { NextPage } from "next";
-import { useState } from "react";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 import Editor from "../components/editor/Editor";
-import { LayoutWhite } from "../components/layoutWhite";
 import { MainButton } from "../components/mainButton";
+import { Navigation } from "../components/navigation";
 import { stickers } from "../components/sticker/stickers";
+import { useInfo } from "../lib/InfoContext";
 import { Laptop, LaptopLayout } from "../types/Layout";
 import { Sticker } from "../types/Sticker";
 
@@ -13,23 +15,15 @@ const sampleLaptop: Laptop = {
 };
 
 const Mypage: NextPage = () => {
-  const [login, setLogin] = useState(false);
-  const [github, setGithub] = useState(false);
-  const handleSignin = () => {
-    // 화면 분기용 테스트코드
-    // localStorage.setItem("token");
-    console.log("clicked signout");
-    setLogin(true);
-  };
-  const handleSignout = () => {
-    // localStorage.removeItem("token");
-    console.log("clicked signout");
-    setLogin(false);
-  };
-  const handleGithub = () => {
-    console.log("connected github");
-    setGithub(true);
-  };
+  const { login, keplr, github, handleGithub, handleSignout, connectWallet } = useInfo();
+
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!login) {
+      router.push("/");
+    }
+  }, []);
 
   const [editorState, setEditorState] = useState<LaptopLayout>({
     laptop: sampleLaptop,
@@ -39,7 +33,8 @@ const Mypage: NextPage = () => {
 
   return (
     <>
-      <LayoutWhite login={login} handleSignout={handleSignout} handleSignin={handleSignin}>
+      <Navigation login={login} handleSignout={handleSignout} connectWallet={connectWallet} />
+      {login && (
         <div className="overflow-hidden w-full h-[100vh] relative text-center">
           <div className="flex justify-center pt-32">
             <Editor
@@ -75,7 +70,7 @@ const Mypage: NextPage = () => {
             </div>
           </div>
         </div>
-      </LayoutWhite>
+      )}
     </>
   );
 };

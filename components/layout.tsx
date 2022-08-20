@@ -8,9 +8,10 @@ interface Props {
   handleSignout: MouseEventHandler<HTMLImageElement>;
   bech32Address: string;
   connectWallet: () => Promise<void>;
+  isWhite?: boolean;
 }
 
-export function Layout({ children, login, handleSignout, connectWallet }: Props) {
+export function Layout({ children, login, handleSignout, connectWallet, isWhite }: Props) {
   return (
     <>
       <nav className="flex fixed w-full items-center justify-between p-4 bg-black z-50 h-[64px]">
@@ -30,7 +31,11 @@ export function Layout({ children, login, handleSignout, connectWallet }: Props)
           )}
         </div>
       </nav>
-      <main className="bg-[url('/assets/bg-image.png')] bg-center bg-cover">{children}</main>
+      {isWhite ? (
+        <main className="bg-[#f5f5f5f5] bg-center bg-cover">{children}</main>
+      ) : (
+        <main className="bg-[url('/assets/bg-image.png')] bg-center bg-cover">{children}</main>
+      )}
     </>
   );
 }
