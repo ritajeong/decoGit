@@ -23,14 +23,20 @@ const Shop: NextPage = () => {
         <section className="z-0 flex flex-col items-center w-full h-screen pt-32">
           <p className="text-5xl font-black text-black uppercase">shop</p>
           <div className="flex justify-center">
-            <div className="bg-white bg-cover w-[840px] h-[70vh] align-center absolute bottom-0 overflow-hidden p-4">
-              <div className="flex flex-wrap align-center h-full gap-4">
+            <div className="bg-white bg-cover w-full max-w-[840px] h-[70vh] align-center absolute bottom-0 overflow-hidden p-4">
+              <div className="flex flex-wrap align-center h-full gap-4 align-center justify-center overflow-y-scroll">
                 {Object.entries(stickers).map(([key, sticker]) => (
-                  <div
-                    className="h-[15vh] w-[15vh] bg-contain bg-no-repeat bg-center shrink-0 mt-4"
-                    key={key}
-                    style={{ backgroundImage: `url('/assets/${sticker.url}')` }}
-                  />
+                  <div className="w-[160px] p-2 shrink-0 mt-4 hover:bg-[#fff1f8] flex flex-col items-center" key={key}>
+                    <div
+                      className="h-[128px] w-[128px] bg-contain bg-no-repeat bg-center"
+                      style={{ backgroundImage: `url('/assets/${sticker.url}')` }}
+                    />
+
+                    <div className="flex justify-center">
+                      <span className="bg-[url('/assets/github/planet.svg')] bg-center bg-cover w-6 h-6"></span>
+                      <span className="pl-2">1024</span>
+                    </div>
+                  </div>
                 ))}
               </div>
             </div>
