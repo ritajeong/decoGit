@@ -7,7 +7,7 @@ import cors from "@fastify/cors"
 
 import { SigningStargateClient, StargateClient } from "@cosmjs/stargate"
 
-import {getSignerFromMnemonic} from "./helper"
+import { getSignerFromMnemonic } from "./helper"
 
 import { IDatabase } from "./schema"
 import * as config from "./config"
@@ -24,7 +24,7 @@ const context: {
 } = {
   decoGitClient: null,
   decoGitFaucetClient: null,
-  faucetAddress: ''
+  faucetAddress: "",
 }
 
 // Require the frameworStargateClientk and instantiate it
@@ -58,9 +58,7 @@ type GHAuthRequestParams = FastifyRequest<{
   }
 }>
 
-
 async function sendDecoTo(addr: string, amount: string) {
-
   return context.decoGitFaucetClient!.sendTokens(
     context.faucetAddress,
     addr,
@@ -70,7 +68,6 @@ async function sendDecoTo(addr: string, amount: string) {
       gas: "200000",
     }
   )
-
 }
 
 fastify.get("/test", async (request, reply) => {
@@ -98,10 +95,13 @@ fastify.get(
 fastify.post(
   "/api/accounts/:accountId",
   async (request: AccountsAccountIdRequestParams, reply) => {
-    if (typeof db[request.params.accountId] !== "undefined") {
-      return reply.status(403).send({
-        success: false,
-      })
+    const existingAccount = db[request.params.accountId]
+
+    if (existingAccount) {
+      return {
+        success: true,
+        redirectTo: config.githubApp.buildRedirUrl(existingAccount.token),
+      }
     }
 
     const redirectTo = request.headers.host ?? null
@@ -225,13 +225,15 @@ const start = async () => {
   }
   try {
     // blockchain client init
-    context.decoGitClient = await StargateClient.connect(config.decoGitChain.rpc)
+    context.decoGitClient = await StargateClient.connect(
+      config.decoGitChain.rpc
+    )
     fastify.log.info(await context.decoGitClient.getChainId())
     const signer = await getSignerFromMnemonic()
     context.decoGitFaucetClient = await SigningStargateClient.connectWithSigner(
       config.decoGitChain.rpc,
       signer
-    );
+    )
 
     // blockchain signed client (faucet) init
     const { address } = (await signer.getAccounts())[0]
