@@ -11,7 +11,7 @@ interface Props {
 export function Layout({ children, login, handleSignout }: Props) {
   return (
     <>
-      <nav className="flex items-center justify-between p-4 bg-black">
+      <nav className="flex fixed w-full items-center justify-between p-4 bg-black">
         <div>
           <Image src="/assets/logo@3x.png" alt="" width={120} height={30}></Image>
         </div>
