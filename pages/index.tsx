@@ -1,10 +1,17 @@
 import type { NextPage } from "next";
-import { Navigation } from "../components/navigation";
+import { useRouter } from "next/router";
 import { MainButton } from "../components/mainButton";
+import { Navigation } from "../components/navigation";
 import { useInfo } from "../lib/InfoContext";
 
 const Home: NextPage = () => {
   const { login, keplr, github, handleGithub, handleSignout, connectWallet } = useInfo();
+
+  const router = useRouter();
+
+  const handleDecorate = () => {
+    router.push("/deco");
+  };
 
   return (
     <>
@@ -28,7 +35,7 @@ const Home: NextPage = () => {
           {login && github && (
             <>
               <div className="pt-16" />
-              <MainButton onClick={handleGithub}>
+              <MainButton onClick={handleDecorate}>
                 <p className="text-5xl font-black text-black uppercase">decorate!</p>
               </MainButton>
               <div className="z-50 flex justify-center h-40 gap-8 pt-16 w-80">
