@@ -38,14 +38,16 @@ const TestEditor: NextPage = () => {
           {editable ? "Unlocked (click to lock)" : "Locked (click to unlock)"}
         </button>
         <div style={{ height: 16 }} />
-        {Object.entries(stickers).map(([key, sticker]) => (
-          <button
-            className="bg-blue-500 hover:bg-blue-700 flex items-center gap-1 text-white font-bold py-2 px-4 rounded"
-            onClick={() => setCurrentSticker(sticker)}
-          >
-            {key}
-          </button>
-        ))}
+        <div className="grid grid-cols-6 gap-4">
+          {Object.entries(stickers).map(([key, sticker]) => (
+            <button
+              className="bg-blue-500 hover:bg-blue-700 flex items-center gap-1 text-white font-bold py-2 px-4 rounded"
+              onClick={() => setCurrentSticker(sticker)}
+            >
+              {key}
+            </button>
+          ))}
+        </div>
       </div>
     </>
   );
