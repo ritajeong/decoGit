@@ -18,6 +18,13 @@
     background-position: center;
     z-index: 10;
   }
+  .icon-sns{
+    background-size: cover;
+    background-position: center;
+    z-index: 50;
+    width: 3rem;
+    height: 3rem;
+  }
 }
 
 html,
