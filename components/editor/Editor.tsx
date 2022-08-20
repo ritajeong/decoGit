@@ -7,14 +7,6 @@ import EditorClipPath from "./EditorClipPath";
 import EditorContext from "./EditorContext";
 import StickerElement from "./StickerElement";
 
-const sampleSticker: Sticker = {
-  id: "python",
-  alt: "Python",
-  url: "sticker/python.svg",
-  originalHeight: 153,
-  originalWidth: 153,
-};
-
 const manufacturerLogoBase = {
   x: 0.5,
   y: 0.5,
@@ -56,6 +48,7 @@ const manufacturerLogo = {
 } as const;
 
 interface Props {
+  currentSticker?: Sticker | null;
   laptopHeight?: number;
   laptopWidth?: number;
   stickerDefaultRatio?: number;
@@ -66,6 +59,7 @@ interface Props {
 }
 
 const defaultProps: Required<OptionalOf<Props>> = {
+  currentSticker: null,
   laptopHeight: 160,
   laptopWidth: 256,
   stickerDefaultRatio: 0.4,
@@ -75,6 +69,7 @@ const defaultProps: Required<OptionalOf<Props>> = {
 
 const Editor: React.FC<Props> = (props) => {
   const {
+    currentSticker,
     laptopHeight,
     laptopWidth,
     stickerDefaultRatio,
@@ -92,6 +87,7 @@ const Editor: React.FC<Props> = (props) => {
 
   const handleClick: MouseEventHandler<SVGSVGElement> = (e) => {
     if (!svgRef.current || !editable) return;
+    if (!currentSticker) return;
     const { x, y } = clientToSVGPosition(e.pageX, e.pageY, svgRef.current);
     const relativeX = x / laptopWidth;
     const relativeY = y / laptopHeight;
@@ -101,7 +97,7 @@ const Editor: React.FC<Props> = (props) => {
       stickers: [
         ...stickers,
         {
-          sticker: sampleSticker,
+          sticker: currentSticker,
           scale: stickerDefaultRatio,
           x: relativeX,
           y: relativeY,
@@ -122,7 +118,7 @@ const Editor: React.FC<Props> = (props) => {
   return (
     <EditorContext.Provider value={{ laptopHeight, laptopWidth }}>
       <svg
-        style={{ ...(editable ? { cursor: "crosshair" } : {}), ...style }}
+        style={{ ...(editable && currentSticker ? { cursor: "crosshair" } : {}), ...style }}
         onClick={handleClick}
         onMouseEnter={() => setGhostShown(true)}
         onMouseLeave={() => setGhostShown(false)}
@@ -138,12 +134,12 @@ const Editor: React.FC<Props> = (props) => {
           {renderStickers.map((sticker, i) => (
             <StickerElement position={sticker} key={i.toString()} />
           ))}
-          {editable && ghostShown ? (
+          {editable && ghostShown && currentSticker ? (
             <g opacity={0.5}>
               <StickerElement
                 position={{
                   ...ghostPosition,
-                  sticker: sampleSticker,
+                  sticker: currentSticker,
                   scale: stickerDefaultRatio,
                   rotate: 0,
                 }}

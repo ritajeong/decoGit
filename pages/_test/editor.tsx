@@ -10,12 +10,21 @@ const sampleLaptop: Laptop = {
   manufacturer: "Texas",
 };
 
+const sampleSticker: Sticker = {
+  id: "python",
+  alt: "Python",
+  url: "sticker/python.svg",
+  originalHeight: 153,
+  originalWidth: 153,
+};
+
 const TestEditor: NextPage = () => {
   const [editorState, setEditorState] = useState<LaptopLayout>({
     laptop: sampleLaptop,
     stickers: [],
   });
   const [editable, setEditable] = useState<boolean>(true);
+  const [currentSticker, setCurrentSticker] = useState<Sticker>(sampleSticker);
 
   return (
     <>
@@ -25,6 +34,7 @@ const TestEditor: NextPage = () => {
           state={editorState}
           onStateChange={setEditorState}
           editable={editable}
+          currentSticker={currentSticker}
           style={{ width: 512, height: 320 }}
         />
         <button
