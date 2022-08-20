@@ -58,7 +58,7 @@ const Shop: NextPage = () => {
                 {stickers
                   ? stickers.sticker
                       .filter(({ owner }) => owner === "")
-                      .map(({ index, name, price, owner }) => (
+                      .map(({ index, name, price }) => (
                         <div
                           className="w-fill h-[160px] p-2 shrink-0 mt-4 hover:bg-[#fff1f8] flex flex-col items-center"
                           key={index}
