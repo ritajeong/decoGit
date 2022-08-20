@@ -1,0 +1,74 @@
+syntax = "proto3";
+package decogit.decogit;
+
+import "gogoproto/gogo.proto";
+import "google/api/annotations.proto";
+import "cosmos/base/query/v1beta1/pagination.proto";
+import "decogit/params.proto";
+import "decogit/sticker.proto";
+// this line is used by starport scaffolding # 1
+
+option go_package = "decogit/x/decogit/types";
+
+// Query defines the gRPC querier service.
+service Query {
+  // Parameters queries the parameters of the module.
+  rpc Params(QueryParamsRequest) returns (QueryParamsResponse) {
+    option (google.api.http).get = "/decogit/decogit/params";
+  }
+  // Queries a Sticker by index.
+	rpc Sticker(QueryGetStickerRequest) returns (QueryGetStickerResponse) {
+		option (google.api.http).get = "/decogit/decogit/sticker/{index}";
+	}
+
+	// Queries a list of Sticker items.
+	rpc StickerAll(QueryAllStickerRequest) returns (QueryAllStickerResponse) {
+		option (google.api.http).get = "/decogit/decogit/sticker";
+	}
+
+// Queries a list of GetMyStickers items.
+	rpc GetMyStickers(QueryGetMyStickersRequest) returns (QueryGetMyStickersResponse) {
+		option (google.api.http).get = "/decogit/decogit/get_my_stickers";
+	}
+
+// this line is used by starport scaffolding # 2
+}
+
+// QueryParamsRequest is request type for the Query/Params RPC method.
+message QueryParamsRequest {}
+
+// QueryParamsResponse is response type for the Query/Params RPC method.
+message QueryParamsResponse {
+  // params holds all the parameters of this module.
+  Params params = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryGetStickerRequest {
+	  string index = 1;
+
+}
+
+message QueryGetStickerResponse {
+	Sticker sticker = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryAllStickerRequest {
+	cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryAllStickerResponse {
+	repeated Sticker sticker = 1 [(gogoproto.nullable) = false];
+	cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+message QueryGetMyStickersRequest {
+	cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryGetMyStickersResponse {
+  // string sticker = 1;
+	repeated Sticker sticker = 1 [(gogoproto.nullable) = false];
+	cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+// this line is used by starport scaffolding # 3

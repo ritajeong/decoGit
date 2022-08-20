@@ -1,0 +1,23 @@
+syntax = "proto3";
+package decogit.decogit;
+
+// this line is used by starport scaffolding # proto/tx/import
+
+option go_package = "decogit/x/decogit/types";
+
+// Msg defines the Msg service.
+service Msg {
+      rpc BuySticker(MsgBuySticker) returns (MsgBuyStickerResponse);
+// this line is used by starport scaffolding # proto/tx/rpc
+}
+
+message MsgBuySticker {
+  string creator = 1;
+  string sticker = 2;
+  string bid = 3;
+}
+
+message MsgBuyStickerResponse {
+}
+
+// this line is used by starport scaffolding # proto/tx/message
