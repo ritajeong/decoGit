@@ -1,4 +1,4 @@
-import { CSSProperties, MouseEventHandler, useMemo, useRef } from "react";
+import { CSSProperties, MouseEventHandler, useMemo, useRef, useState } from "react";
 import { LaptopLayout } from "../../types/Layout";
 import { Sticker } from "../../types/Sticker";
 import { clientToSVGPosition } from "../../utils/svg";
@@ -83,6 +83,8 @@ const Editor: React.FC<Props> = (props) => {
     editable,
   } = { ...defaultProps, ...props };
   const svgRef = useRef<SVGSVGElement>(null);
+  const [ghostShown, setGhostShown] = useState<boolean>(false);
+  const [ghostPosition, setGhostPosition] = useState<{ x: number; y: number }>({ x: 0.5, y: 0.5 });
 
   const { laptop, stickers } = layout;
 
@@ -109,11 +111,22 @@ const Editor: React.FC<Props> = (props) => {
     });
   };
 
+  const handleMouseEvent: MouseEventHandler<SVGSVGElement> = (e) => {
+    if (!svgRef.current || !editable) return;
+    const { x, y } = clientToSVGPosition(e.pageX, e.pageY, svgRef.current);
+    const relativeX = x / laptopWidth;
+    const relativeY = y / laptopHeight;
+    setGhostPosition({ x: relativeX, y: relativeY });
+  };
+
   return (
     <EditorContext.Provider value={{ laptopHeight, laptopWidth }}>
       <svg
         style={{ ...(editable ? { cursor: "crosshair" } : {}), ...style }}
         onClick={handleClick}
+        onMouseEnter={() => setGhostShown(true)}
+        onMouseLeave={() => setGhostShown(false)}
+        onMouseMove={handleMouseEvent}
         ref={svgRef}
         viewBox={`0 0 ${laptopWidth} ${laptopHeight}`}
       >
@@ -125,6 +138,18 @@ const Editor: React.FC<Props> = (props) => {
           {renderStickers.map((sticker, i) => (
             <StickerElement position={sticker} key={i.toString()} />
           ))}
+          {editable && ghostShown ? (
+            <g opacity={0.5}>
+              <StickerElement
+                position={{
+                  ...ghostPosition,
+                  sticker: sampleSticker,
+                  scale: stickerDefaultRatio,
+                  rotate: 0,
+                }}
+              />
+            </g>
+          ) : null}
         </g>
       </svg>
     </EditorContext.Provider>
