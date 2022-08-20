@@ -54,13 +54,13 @@ const Shop: NextPage = () => {
           <p className="text-5xl font-black text-black uppercase">shop</p>
           <div className="flex justify-center">
             <div className="bg-white bg-cover w-full max-w-[840px] h-[70vh] align-center absolute bottom-0 overflow-hidden p-4">
-              <div className="flex flex-wrap justify-center h-full gap-4 overflow-y-scroll align-center">
+              <div className="grid grid-cols-[repeat(auto-fill,minmax(160px,1fr))] justify-center h-full gap-4 overflow-y-scroll align-center">
                 {stickers
                   ? stickers.sticker
                       .filter(({ owner }) => owner === "")
                       .map(({ index, name, price, owner }) => (
                         <div
-                          className="w-[160px] p-2 shrink-0 mt-4 hover:bg-[#fff1f8] flex flex-col items-center"
+                          className="w-fill h-[160px] p-2 shrink-0 mt-4 hover:bg-[#fff1f8] flex flex-col items-center"
                           key={index}
                         >
                           <div
