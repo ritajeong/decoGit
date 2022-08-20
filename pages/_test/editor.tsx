@@ -43,6 +43,7 @@ const TestEditor: NextPage = () => {
             <button
               className="bg-blue-500 hover:bg-blue-700 flex items-center gap-1 text-white font-bold py-2 px-4 rounded"
               onClick={() => setCurrentSticker(sticker)}
+              key={key}
             >
               {key}
             </button>
