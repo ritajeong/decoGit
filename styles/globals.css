@@ -12,12 +12,6 @@
     border: 1px solid #A5A6AC;
     border-radius: 30px;
   }
-  .sticker{
-    position: absolute;
-    background-size: cover;
-    background-position: center;
-    z-index: 10;
-  }
   .icon-sns{
     background-size: cover;
     background-position: center;
