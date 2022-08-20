@@ -1,5 +1,5 @@
-import { CSSProperties, HTMLAttributes, MouseEventHandler, useEffect, useMemo, useRef } from "react";
-import { LaptopLayout, StickerPosition } from "../../types/Layout";
+import { CSSProperties, MouseEventHandler, useMemo, useRef } from "react";
+import { LaptopLayout } from "../../types/Layout";
 import { Sticker } from "../../types/Sticker";
 import { clientToSVGPosition } from "../../utils/svg";
 import { OptionalOf } from "../../utils/types";

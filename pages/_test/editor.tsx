@@ -1,5 +1,5 @@
 import { NextPage } from "next";
-import { useRef, useState } from "react";
+import { useState } from "react";
 import Editor from "../../components/editor/Editor";
 import { Laptop, LaptopLayout } from "../../types/Layout";
 import { Sticker } from "../../types/Sticker";
