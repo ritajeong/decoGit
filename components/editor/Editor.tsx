@@ -3,6 +3,7 @@ import { LaptopLayout, StickerPosition } from "../../types/Layout";
 import { Sticker } from "../../types/Sticker";
 import { clientToSVGPosition } from "../../utils/svg";
 import { OptionalOf } from "../../utils/types";
+import EditorClipPath from "./EditorClipPath";
 import EditorContext from "./EditorContext";
 import StickerElement from "./StickerElement";
 
@@ -109,10 +110,15 @@ const Editor: React.FC<Props> = (props) => {
   return (
     <EditorContext.Provider value={{ laptopHeight, laptopWidth }}>
       <svg style={style} onClick={handleClick} ref={svgRef} viewBox={`0 0 ${laptopWidth} ${laptopHeight}`}>
-        <image href={`/assets/laptop/laptop-${laptop.color}.svg`} width={laptopWidth} height={laptopHeight} />
-        {renderStickers.map((sticker, i) => (
-          <StickerElement position={sticker} key={i.toString()} />
-        ))}
+        <defs>
+          <EditorClipPath />
+        </defs>
+        <g clip-path="url(#shape)">
+          <image href={`/assets/laptop/laptop-${laptop.color}.svg`} width={laptopWidth} height={laptopHeight} />
+          {renderStickers.map((sticker, i) => (
+            <StickerElement position={sticker} key={i.toString()} />
+          ))}
+        </g>
       </svg>
     </EditorContext.Provider>
   );
