@@ -129,7 +129,7 @@ const Editor: React.FC<Props> = (props) => {
         <defs>
           <EditorClipPath />
         </defs>
-        <g clip-path="url(#shape)">
+        <g clipPath="url(#shape)">
           <image href={`/assets/laptop/laptop-${laptop.color}.svg`} width={laptopWidth} height={laptopHeight} />
           {renderStickers.map((sticker, i) => (
             <StickerElement position={sticker} key={i.toString()} />
