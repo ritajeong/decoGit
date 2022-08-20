@@ -7,16 +7,15 @@ import { useInfo } from "../lib/InfoContext";
 import { ProfileCard } from "../components/profileCard";
 
 const Mypage: NextPage = () => {
-  const { login, keplr, github, handleGithub, handleSignout, connectWallet } = useInfo();
+  const { login, loading, keplr, github, handleGithub, handleSignout, connectWallet } = useInfo();
 
   const router = useRouter();
 
   useEffect(() => {
-    if (!login) {
+    if (!login && !loading) {
       router.push("/");
     }
-  }, []);
-
+  }, [login, loading]);
   return (
     <>
       <Navigation login={login} handleSignout={handleSignout} connectWallet={connectWallet} />

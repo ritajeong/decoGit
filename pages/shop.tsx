@@ -14,7 +14,7 @@ const Shop: NextPage = () => {
     if (!login && !loading) {
       router.push("/");
     }
-  }, []);
+  }, [login, loading]);
 
   return (
     <>
@@ -24,7 +24,7 @@ const Shop: NextPage = () => {
           <p className="text-5xl font-black text-black uppercase">shop</p>
           <div className="flex justify-center">
             <div className="bg-white bg-cover w-full max-w-[840px] h-[70vh] align-center absolute bottom-0 overflow-hidden p-4">
-              <div className="flex flex-wrap align-center h-full gap-4 align-center justify-center overflow-y-scroll">
+              <div className="flex flex-wrap justify-center h-full gap-4 overflow-y-scroll align-center">
                 {Object.entries(stickers).map(([key, sticker]) => (
                   <div className="w-[160px] p-2 shrink-0 mt-4 hover:bg-[#fff1f8] flex flex-col items-center" key={key}>
                     <div
