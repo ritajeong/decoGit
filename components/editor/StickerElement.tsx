@@ -18,6 +18,7 @@ const StickerElement: React.FC<Props> = (props) => {
       y={y * laptopHeight - imageHeight / 2}
       width={imageWidth}
       height={imageHeight}
+      transform={`rotate(${rotate} ${x * laptopWidth} ${y * laptopHeight})`}
     />
   );
 };
