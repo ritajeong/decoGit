@@ -23,7 +23,7 @@ const Mypage: NextPage = () => {
     if (!login && !loading) {
       router.push("/");
     }
-  }, []);
+  }, [login, loading]);
 
   const [editorState, setEditorState] = useState<LaptopLayout>({
     laptop: sampleLaptop,
