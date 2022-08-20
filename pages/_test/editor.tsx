@@ -7,7 +7,7 @@ import { Sticker } from "../../types/Sticker";
 const sampleSticker: Sticker = {
   id: "python",
   alt: "Python",
-  url: "python.svg",
+  url: "sticker/python.svg",
   originalHeight: 153,
   originalWidth: 153,
 };
@@ -20,16 +20,9 @@ const sampleLaptop: Laptop = {
 const TestEditor: NextPage = () => {
   const [editorState, setEditorState] = useState<LaptopLayout>({
     laptop: sampleLaptop,
-    stickers: [
-      {
-        sticker: sampleSticker,
-        x: 0.5,
-        y: 0.5,
-        scale: 1,
-        rotate: 0,
-      },
-    ],
+    stickers: [],
   });
+
   return (
     <>
       <div className="p-16">

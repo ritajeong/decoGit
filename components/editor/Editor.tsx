@@ -1,8 +1,18 @@
-import { CSSProperties, HTMLAttributes, useEffect, useMemo, useRef } from "react";
+import { CSSProperties, HTMLAttributes, MouseEventHandler, useEffect, useMemo, useRef } from "react";
 import { LaptopLayout, StickerPosition } from "../../types/Layout";
+import { Sticker } from "../../types/Sticker";
+import { clientToSVGPosition } from "../../utils/svg";
 import { OptionalOf } from "../../utils/types";
 import EditorContext from "./EditorContext";
 import StickerElement from "./StickerElement";
+
+const sampleSticker: Sticker = {
+  id: "python",
+  alt: "Python",
+  url: "sticker/python.svg",
+  originalHeight: 153,
+  originalWidth: 153,
+};
 
 const manufacturerLogoBase = {
   x: 0.5,
@@ -61,22 +71,47 @@ const defaultProps: Required<OptionalOf<Props>> = {
 };
 
 const Editor: React.FC<Props> = (props) => {
-  const { laptopHeight, laptopWidth, state: layout, style, ...rest } = { ...defaultProps, ...props };
+  const {
+    laptopHeight,
+    laptopWidth,
+    stickerDefaultRatio,
+    state: layout,
+    style,
+    ...rest
+  } = { ...defaultProps, ...props };
   const svgRef = useRef<SVGSVGElement>(null);
 
   const { laptop, stickers } = layout;
 
   const renderStickers = useMemo(() => [manufacturerLogo[laptop.manufacturer], ...stickers], [laptop, stickers]);
 
+  const handleClick: MouseEventHandler<SVGSVGElement> = (e) => {
+    if (!svgRef.current) return;
+    const { x, y } = clientToSVGPosition(e.pageX, e.pageY, svgRef.current);
+    const relativeX = x / laptopWidth;
+    const relativeY = y / laptopHeight;
+
+    props.onStateChange({
+      ...layout,
+      stickers: [
+        ...stickers,
+        {
+          sticker: sampleSticker,
+          scale: stickerDefaultRatio,
+          x: relativeX,
+          y: relativeY,
+          rotate: 0,
+        },
+      ],
+    });
+  };
+
   return (
     <EditorContext.Provider value={{ laptopHeight, laptopWidth }}>
-      <svg style={style} ref={svgRef} viewBox={`0 0 ${laptopWidth} ${laptopHeight}`}>
+      <svg style={style} onClick={handleClick} ref={svgRef} viewBox={`0 0 ${laptopWidth} ${laptopHeight}`}>
         <image href={`/assets/laptop/laptop-${laptop.color}.svg`} width={laptopWidth} height={laptopHeight} />
-        {laptop.manufacturer === "Cupertino" ? (
-          <image href={`/assets/laptop/laptop-${laptop.color}.svg`} width={laptopWidth} height={laptopHeight} />
-        ) : null}
-        {renderStickers.map((sticker) => (
-          <StickerElement position={sticker} key={sticker.sticker.id} />
+        {renderStickers.map((sticker, i) => (
+          <StickerElement position={sticker} key={i.toString()} />
         ))}
       </svg>
     </EditorContext.Provider>

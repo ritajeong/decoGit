@@ -16,6 +16,8 @@ const StickerElement: React.FC<Props> = (props) => {
       href={`/assets/${sticker.url}`}
       x={x * laptopWidth - imageWidth / 2}
       y={y * laptopHeight - imageHeight / 2}
+      width={imageWidth}
+      height={imageHeight}
     />
   );
 };
