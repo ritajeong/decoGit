@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
-import { ReactNode, createContext, useState, useContext, Dispatch, SetStateAction } from "react";
+import { ReactNode, createContext, useState, useContext, Dispatch, SetStateAction, useEffect } from "react";
 import { Keplr } from "@keplr-wallet/types";
 import { getKeplrFromWindow } from "@keplr-wallet/stores";
 import { chainInfo } from "../config/chain";
@@ -20,14 +20,12 @@ export const useInfo = () =>
     handleGithub: () => void;
     handleSignout: () => void;
     connectWallet: () => Promise<void>;
-    setBech32Address: Dispatch<SetStateAction<string>>;
   }>(InfoContext as any);
 
 export const InfoProvider = ({ children }: Props) => {
   const [login, setLogin] = useState<boolean>(false);
   const [github, setGithub] = useState<boolean>(false);
   const [keplr, setKeplr] = useState<Keplr | null>(null);
-  const [bech32Address, setBech32Address] = useState<string>("");
 
   const connectWallet = async () => {
     try {
@@ -52,7 +50,6 @@ export const InfoProvider = ({ children }: Props) => {
     localStorage?.removeItem(KeyAccountAutoConnect);
     setKeplr(null);
     setLogin(false);
-    setBech32Address("");
     console.log("logout success");
   };
   const handleGithub = () => {
@@ -60,9 +57,16 @@ export const InfoProvider = ({ children }: Props) => {
     setGithub(true);
   };
 
+  useEffect(() => {
+    const shouldAutoConnectAccount = localStorage?.getItem(KeyAccountAutoConnect) != null;
+    if (shouldAutoConnectAccount) {
+      connectWallet();
+    }
+  }, [keplr]);
+
   return (
     <InfoContext.Provider
-      value={{ login, keplr, github, handleGithub, handleSignout, connectWallet, setBech32Address }}
+      value={{ login, keplr, github, handleGithub, handleSignout, connectWallet }}
     >
       {children}
     </InfoContext.Provider>

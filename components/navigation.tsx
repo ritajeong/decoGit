@@ -1,8 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
 import { MouseEventHandler, useEffect } from "react";
-import { useInfo } from "../lib/InfoContext";
-import { chainInfo } from "../config/chain";
 
 interface Props {
   login: boolean;
@@ -10,27 +8,7 @@ interface Props {
   connectWallet: () => Promise<void>;
 }
 
-const KeyAccountAutoConnect = "account_auto_connect";
-
 export function Navigation({ login, handleSignout, connectWallet }: Props) {
-  const { keplr, setBech32Address } = useInfo();
-
-  useEffect(() => {
-    const shouldAutoConnectAccount = localStorage?.getItem(KeyAccountAutoConnect) != null;
-
-    const geyKeySetAccountInfo = async () => {
-      if (keplr) {
-        const key = await keplr.getKey(chainInfo.chainId);
-        setBech32Address(key.bech32Address);
-      }
-    };
-
-    if (shouldAutoConnectAccount) {
-      connectWallet();
-    }
-    geyKeySetAccountInfo();
-  }, [keplr]);
-
   return (
     <>
       <nav className="flex fixed w-full items-center justify-between p-4 bg-black z-50 h-[64px]">
