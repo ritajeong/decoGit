@@ -42,7 +42,9 @@ export function Navigation({ login, handleSignout, connectWallet }: Props) {
           {login && (
             <>
               <Image src="/assets/icon-cart.svg" alt="" width={36} height={36} />
-              <Image src="/assets/icon-user.svg" alt="" width={36} height={36} />
+              <Link href="/mypage">
+                <Image src="/assets/icon-user.svg" alt="" width={36} height={36} />
+              </Link>
               <Link href="/">
                 <Image onClick={handleSignout} src="/assets/icon-logout.svg" alt="" width={36} height={36}></Image>
               </Link>
