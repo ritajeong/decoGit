@@ -1,6 +1,6 @@
-import React, { PropsWithChildren } from "react";
+import React from "react";
 
-export const ProfileCard: React.FC<PropsWithChildren<{}>> = (props) => {
+export const ProfileCard: React.FC = () => {
   return (
     <>
       <section className="flex justify-center max-w-[100vw]">
