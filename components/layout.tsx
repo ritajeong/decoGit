@@ -1,19 +1,14 @@
 import Image from "next/image";
 import Link from "next/link";
-import { useState, ReactNode } from "react";
+import { MouseEventHandler, ReactNode } from "react";
 
 interface Props {
   children: ReactNode;
+  login: boolean;
+  handleSignout: MouseEventHandler<HTMLImageElement>;
 }
 
-export function Layout({ children }: Props) {
-  const [login, setLogin] = useState(false);
-  const handleSignout = () => {
-    // localStorage.removeItem("token");
-    console.log("clicked signout");
-    setLogin(false);
-  };
-
+export function Layout({ children, login, handleSignout }: Props) {
   return (
     <>
       <nav className="flex items-center justify-between p-4 bg-black">
