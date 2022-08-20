@@ -12,18 +12,18 @@ interface Props {
 export function Layout({ children, login, handleSignout, handleSignin }: Props) {
   return (
     <>
-      <nav className="flex fixed w-full items-center justify-between p-4 bg-black z-50">
-        <div>
-          <Image src="/assets/logo@3x.png" alt="" width={120} height={30}></Image>
+      <nav className="flex fixed w-full items-center justify-between p-4 bg-black z-50 h-[64px]">
+        <div className="flex items-center">
+          <Image src="/assets/logo@3x.png" alt="" width={120} height={30} />
         </div>
         <div className="flex gap-4">
-          <Image onClick={handleSignin} src="/assets/icon-wallet.svg" alt="" width={40} height={40}></Image>
+          <Image onClick={handleSignin} src="/assets/icon-wallet.svg" alt="" width={36} height={36} />
           {login && (
             <>
-              <Image src="/assets/icon-cart.svg" alt="" width={40} height={40}></Image>
-              <Image src="/assets/icon-user.svg" alt="" width={40} height={40}></Image>
+              <Image src="/assets/icon-cart.svg" alt="" width={36} height={36} />
+              <Image src="/assets/icon-user.svg" alt="" width={36} height={36} />
               <Link href="/">
-                <Image onClick={handleSignout} src="/assets/icon-logout.svg" alt="" width={40} height={40}></Image>
+                <Image onClick={handleSignout} src="/assets/icon-logout.svg" alt="" width={36} height={36}></Image>
               </Link>
             </>
           )}
