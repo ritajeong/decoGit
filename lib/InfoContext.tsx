@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
-import { ReactNode, createContext, useState, useContext } from "react";
+import { ReactNode, createContext, useState, useContext, Dispatch, SetStateAction } from "react";
 import { Keplr } from "@keplr-wallet/types";
 import { getKeplrFromWindow } from "@keplr-wallet/stores";
 import { chainInfo } from "../config/chain";
@@ -12,7 +12,16 @@ const KeyAccountAutoConnect = "account_auto_connect";
 
 export const InfoContext = createContext({});
 
-export const useInfo = () => useContext(InfoContext);
+export const useInfo = () =>
+  useContext<{
+    login: boolean;
+    github: boolean;
+    keplr: Keplr | null;
+    handleGithub: () => void;
+    handleSignout: () => void;
+    connectWallet: () => Promise<void>;
+    setBech32Address: Dispatch<SetStateAction<string>>;
+  }>(InfoContext as any);
 
 export const InfoProvider = ({ children }: Props) => {
   const [login, setLogin] = useState<boolean>(false);
