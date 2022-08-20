@@ -55,13 +55,13 @@ const Home: NextPage = () => {
           )}
 
           {!login && (
-            <>
+            <div className="main-sticker-container">
               {/* absolute sticker zone! */}
-              <div className="w-[971px] h-[247px] sticker bg-[url('/assets/logo@3x.png')] left-0 bottom-0 blur-md rotate-[13deg]"></div>
-              <div className="w-[120px] h-[120px] sticker bg-[url('/assets/sticker/kotlin.svg')] left-40 top-60 blur-sm"></div>
-              <div className="w-[215px] h-[215px] sticker bg-[url('/assets/sticker/c.svg')] right-40 top-60 blur-sm rotate-[17deg]"></div>
-              <div className="w-[300px] h-[215px] sticker bg-[url('/assets/sticker/mysql.svg')] right-60 bottom-20 blur-sm"></div>
-            </>
+              <div className="main-sticker main-sticker-1" />
+              <div className="main-sticker main-sticker-2" />
+              <div className="main-sticker main-sticker-3" />
+              <div className="main-sticker main-sticker-4" />
+            </div>
           )}
         </section>
       </Layout>
