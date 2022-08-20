@@ -67,6 +67,7 @@ const Mypage: NextPage = () => {
                   <div
                     className="h-[15vh] w-[15vh] bg-contain bg-no-repeat bg-center shrink-0 mt-4"
                     onClick={() => setCurrentSticker(sticker)}
+                    key={key}
                     style={{ backgroundImage: `url('/assets/${sticker.url}')` }}
                   />
                 ))}
