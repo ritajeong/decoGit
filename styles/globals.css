@@ -12,20 +12,7 @@
     border: 1px solid #A5A6AC;
     border-radius: 30px;
   }
-  .blured-icon{
-    position: absolute;
-    width: 971px;
-    height: 247px;
-    background: url("/assets/logo@3x.png");
-    background-size: cover;
-    background-position: center;
-    filter: blur(10px);
-    transform: rotate(13.18deg);
-    left: 0;
-    bottom: 0;
-    z-index: 10;
-  }
-  .sticked-icon{
+  .sticker{
     position: absolute;
     background-size: cover;
     background-position: center;
