@@ -1,6 +1,16 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@layer components {
+  .labtop {
+    width: 720px;
+    height: 450px;
+    background: linear-gradient(284.35deg, #D8D8D8 1.49%, #ECECEC 30.6%, #E6E6E6 50%, #E3E3E3 74.25%, #E3E3E3 79.1%, #E5E5E5 98.51%);
+    border: 1px solid #A5A6AC;
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.12), 0px 16px 32px rgba(0, 0, 0, 0.08);
+    border-radius: 30px;
+  }
+}
 
 html,
 body {
