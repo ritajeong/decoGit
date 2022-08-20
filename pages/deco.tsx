@@ -15,12 +15,12 @@ const sampleLaptop: Laptop = {
 };
 
 const Mypage: NextPage = () => {
-  const { login, keplr, github, handleGithub, handleSignout, connectWallet } = useInfo();
+  const { login, loading, keplr, github, handleGithub, handleSignout, connectWallet } = useInfo();
 
   const router = useRouter();
 
   useEffect(() => {
-    if (!login) {
+    if (!login && !loading) {
       router.push("/");
     }
   }, []);

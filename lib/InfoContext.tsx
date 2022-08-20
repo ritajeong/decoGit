@@ -15,6 +15,7 @@ export const InfoContext = createContext({});
 export const useInfo = () =>
   useContext<{
     login: boolean;
+    loading: boolean;
     github: boolean;
     keplr: Keplr | null;
     handleGithub: () => void;
@@ -25,14 +26,17 @@ export const useInfo = () =>
 
 export const InfoProvider = ({ children }: Props) => {
   const [login, setLogin] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(true);
   const [github, setGithub] = useState<boolean>(false);
   const [keplr, setKeplr] = useState<Keplr | null>(null);
   const [bech32Address, setBech32Address] = useState<string>("");
 
   const connectWallet = async () => {
+    setLoading(true);
     try {
       const newKeplr = await getKeplrFromWindow();
       if (!newKeplr) {
+        setLoading(false);
         throw new Error("Keplr extension not found");
       }
 
@@ -42,9 +46,11 @@ export const InfoProvider = ({ children }: Props) => {
       localStorage?.setItem(KeyAccountAutoConnect, "true");
       setKeplr(newKeplr);
 
+      setLoading(false);
       setLogin(true); // TODO : change to global state
       console.log("login success");
     } catch (e) {
+      setLoading(false);
       alert(e);
     }
   };
@@ -62,7 +68,7 @@ export const InfoProvider = ({ children }: Props) => {
 
   return (
     <InfoContext.Provider
-      value={{ login, keplr, github, handleGithub, handleSignout, connectWallet, setBech32Address }}
+      value={{ login, loading, keplr, github, handleGithub, handleSignout, connectWallet, setBech32Address }}
     >
       {children}
     </InfoContext.Provider>
