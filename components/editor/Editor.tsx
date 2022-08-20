@@ -59,6 +59,7 @@ interface Props {
   laptopHeight?: number;
   laptopWidth?: number;
   stickerDefaultRatio?: number;
+  editable?: boolean;
   style?: CSSProperties;
   state: LaptopLayout;
   onStateChange: (newState: LaptopLayout) => void;
@@ -68,6 +69,7 @@ const defaultProps: Required<OptionalOf<Props>> = {
   laptopHeight: 160,
   laptopWidth: 256,
   stickerDefaultRatio: 0.4,
+  editable: true,
   style: {},
 };
 
@@ -78,7 +80,7 @@ const Editor: React.FC<Props> = (props) => {
     stickerDefaultRatio,
     state: layout,
     style,
-    ...rest
+    editable,
   } = { ...defaultProps, ...props };
   const svgRef = useRef<SVGSVGElement>(null);
 
@@ -87,7 +89,7 @@ const Editor: React.FC<Props> = (props) => {
   const renderStickers = useMemo(() => [manufacturerLogo[laptop.manufacturer], ...stickers], [laptop, stickers]);
 
   const handleClick: MouseEventHandler<SVGSVGElement> = (e) => {
-    if (!svgRef.current) return;
+    if (!svgRef.current || !editable) return;
     const { x, y } = clientToSVGPosition(e.pageX, e.pageY, svgRef.current);
     const relativeX = x / laptopWidth;
     const relativeY = y / laptopHeight;
@@ -109,7 +111,12 @@ const Editor: React.FC<Props> = (props) => {
 
   return (
     <EditorContext.Provider value={{ laptopHeight, laptopWidth }}>
-      <svg style={style} onClick={handleClick} ref={svgRef} viewBox={`0 0 ${laptopWidth} ${laptopHeight}`}>
+      <svg
+        style={{ ...(editable ? { cursor: "crosshair" } : {}), ...style }}
+        onClick={handleClick}
+        ref={svgRef}
+        viewBox={`0 0 ${laptopWidth} ${laptopHeight}`}
+      >
         <defs>
           <EditorClipPath />
         </defs>
