@@ -4,18 +4,11 @@ import Editor from "../../components/editor/Editor";
 import { Laptop, LaptopLayout } from "../../types/Layout";
 import { Sticker } from "../../types/Sticker";
 import { IoLockClosed, IoLockOpen } from "react-icons/io5";
+import { stickers } from "../../components/sticker/stickers";
 
 const sampleLaptop: Laptop = {
   color: "white",
   manufacturer: "Texas",
-};
-
-const sampleSticker: Sticker = {
-  id: "python",
-  alt: "Python",
-  url: "sticker/python.svg",
-  originalHeight: 153,
-  originalWidth: 153,
 };
 
 const TestEditor: NextPage = () => {
@@ -24,7 +17,7 @@ const TestEditor: NextPage = () => {
     stickers: [],
   });
   const [editable, setEditable] = useState<boolean>(true);
-  const [currentSticker, setCurrentSticker] = useState<Sticker>(sampleSticker);
+  const [currentSticker, setCurrentSticker] = useState<Sticker>(stickers.python);
 
   return (
     <>
@@ -44,6 +37,15 @@ const TestEditor: NextPage = () => {
           {editable ? <IoLockOpen /> : <IoLockClosed />}
           {editable ? "Unlocked (click to lock)" : "Locked (click to unlock)"}
         </button>
+        <div style={{ height: 16 }} />
+        {Object.entries(stickers).map(([key, sticker]) => (
+          <button
+            className="bg-blue-500 hover:bg-blue-700 flex items-center gap-1 text-white font-bold py-2 px-4 rounded"
+            onClick={() => setCurrentSticker(sticker)}
+          >
+            {key}
+          </button>
+        ))}
       </div>
     </>
   );

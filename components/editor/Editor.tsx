@@ -88,7 +88,7 @@ const Editor: React.FC<Props> = (props) => {
   const handleClick: MouseEventHandler<SVGSVGElement> = (e) => {
     if (!svgRef.current || !editable) return;
     if (!currentSticker) return;
-    const { x, y } = clientToSVGPosition(e.pageX, e.pageY, svgRef.current);
+    const { x, y } = clientToSVGPosition(e.clientX, e.clientY, svgRef.current);
     const relativeX = x / laptopWidth;
     const relativeY = y / laptopHeight;
 
@@ -109,7 +109,7 @@ const Editor: React.FC<Props> = (props) => {
 
   const handleMouseEvent: MouseEventHandler<SVGSVGElement> = (e) => {
     if (!svgRef.current || !editable) return;
-    const { x, y } = clientToSVGPosition(e.pageX, e.pageY, svgRef.current);
+    const { x, y } = clientToSVGPosition(e.clientX, e.clientY, svgRef.current);
     const relativeX = x / laptopWidth;
     const relativeY = y / laptopHeight;
     setGhostPosition({ x: relativeX, y: relativeY });
