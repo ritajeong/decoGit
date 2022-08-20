@@ -34,6 +34,9 @@ type AccountsAccountIdRequestParams = FastifyRequest<{
   Params: {
     accountId: string
   }
+  Body: {
+    redirectTo: string
+  }
 }>
 
 type GHHookRequestParams = FastifyRequest<{
@@ -97,14 +100,18 @@ fastify.post(
   async (request: AccountsAccountIdRequestParams, reply) => {
     const existingAccount = db[request.params.accountId]
 
-    if (existingAccount) {
+    const oAuthRedirUrl = encodeURIComponent(
+      `http://${request.headers.host}/api/external/github/auth`
+    )
+
+    if (existingAccount?.account) {
       return {
         success: true,
-        redirectTo: config.githubApp.buildRedirUrl(existingAccount.token),
+        exists: true,
       }
     }
 
-    const redirectTo = request.headers.host ?? null
+    const { redirectTo } = request.body
     const token = randomUUID()
 
     db[request.params.accountId] = {
@@ -114,58 +121,57 @@ fastify.post(
     }
     await write()
 
-    return { success: true, redirectTo: config.githubApp.buildRedirUrl(token) }
+    return {
+      success: true,
+      redirectTo: config.githubApp.buildRedirUrl(token, oAuthRedirUrl),
+    }
   }
 )
 
 fastify.get(
   "/api/external/github/auth",
   async (request: GHAuthRequestParams, reply) => {
-    const { code, installation_id, setup_action, state } = request.query
+    const { code, state } = request.query
 
     let success = false
-    if (setup_action === "install") {
-      try {
-        const { client_id, client_secret, oAuthUrl } = config.githubApp
+    try {
+      const { client_id, client_secret, oAuthUrl } = config.githubApp
 
-        const response = await axios.post(oAuthUrl, {
-          client_id,
-          client_secret,
-          code,
-        })
+      const response = await axios.post(oAuthUrl, {
+        client_id,
+        client_secret,
+        code,
+      })
 
-        const { access_token } = qs.parse(response.data)
+      const { access_token } = qs.parse(response.data)
 
-        const response2 = await axios.get("https://api.github.com/user", {
-          headers: {
-            Authorization: `Token ${access_token}`,
-          },
-        })
+      const response2 = await axios.get("https://api.github.com/user", {
+        headers: {
+          Authorization: `Token ${access_token}`,
+        },
+      })
 
-        const { id: userId, name, avatar_url } = response2.data
+      const { id: userId, name, avatar_url } = response2.data
 
-        const tempInstance = Object.values(db).find((v) => v.token === state)
+      const tempInstance = Object.values(db).find((v) => v.token === state)
 
-        if (!tempInstance) {
-          fastify.log.error(
-            `gh userId=${userId} does not have any temp session`
-          )
-        } else {
-          tempInstance.account = {
-            id: userId,
-            name,
-            avatar_url,
-          }
-          await write()
-          success = true
-
-          if (tempInstance.redirectTo) {
-            return reply.redirect(301, `http://${tempInstance.redirectTo}`)
-          }
+      if (!tempInstance) {
+        fastify.log.error(`gh userId=${userId} does not have any temp session`)
+      } else {
+        tempInstance.account = {
+          id: userId,
+          name,
+          avatar_url,
         }
-      } catch (err) {
-        fastify.log.error(err)
+        await write()
+        success = true
+
+        if (tempInstance.redirectTo) {
+          return reply.redirect(301, tempInstance.redirectTo)
+        }
       }
+    } catch (err) {
+      fastify.log.error(err)
     }
     return { success }
   }
