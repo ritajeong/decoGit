@@ -3,6 +3,8 @@ import { ReactNode, createContext, useState, useContext, Dispatch, SetStateActio
 import { Keplr } from "@keplr-wallet/types";
 import { getKeplrFromWindow } from "@keplr-wallet/stores";
 import { chainInfo } from "../config/chain";
+import { useAddress } from "../hooks/useAddress";
+import axios from "axios";
 
 interface Props {
   children: ReactNode;
@@ -28,6 +30,8 @@ export const InfoProvider = ({ children }: Props) => {
   const [loading, setLoading] = useState<boolean>(true);
   const [github, setGithub] = useState<boolean>(false);
   const [keplr, setKeplr] = useState<Keplr | null>(null);
+
+  const address = useAddress(keplr);
 
   const connectWallet = async () => {
     setLoading(true);
@@ -56,11 +60,19 @@ export const InfoProvider = ({ children }: Props) => {
     localStorage?.removeItem(KeyAccountAutoConnect);
     setKeplr(null);
     setLogin(false);
+    setGithub(false);
     console.log("logout success");
   };
   const handleGithub = () => {
-    console.log("connected github");
+    axios
+      .post("http://5.server.susuyo.ai:3030/api/accounts/" + address, { redirectTo: window.location.href })
+      .then((res) => {
+        if (!res.data.exists) {
+          window.location.replace(res.data.redirectTo);
+        }
+      });
     setGithub(true);
+    console.log("connected github");
   };
 
   useEffect(() => {
@@ -71,9 +83,7 @@ export const InfoProvider = ({ children }: Props) => {
   }, [keplr]);
 
   return (
-    <InfoContext.Provider
-      value={{ login, keplr, github, handleGithub, handleSignout, connectWallet }}
-    >
+    <InfoContext.Provider value={{ login, keplr, github, handleGithub, handleSignout, connectWallet }}>
       {children}
     </InfoContext.Provider>
   );
