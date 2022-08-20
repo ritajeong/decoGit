@@ -35,7 +35,9 @@ export function Navigation({ login, handleSignout, connectWallet }: Props) {
     <>
       <nav className="flex fixed w-full items-center justify-between p-4 bg-black z-50 h-[64px]">
         <div className="flex items-center">
-          <Image src="/assets/logo@3x.png" alt="" width={120} height={30} />
+          <Link href="/">
+            <Image src="/assets/logo@3x.png" alt="" width={120} height={30} />
+          </Link>
         </div>
         <div className="flex gap-4">
           <Image onClick={connectWallet} src="/assets/icon-wallet.svg" alt="" width={36} height={36} />
