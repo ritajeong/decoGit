@@ -12,7 +12,7 @@ const Mypage: NextPage = () => {
   const router = useRouter();
   useEffect(() => {
     if (!login) {
-      router.push("/");
+      // router.push("/");
     }
   }, [login]);
 
