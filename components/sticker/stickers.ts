@@ -18,7 +18,7 @@ export const stickers = {
   hanbyeol: s(204, 204, "hanbyeol", "png"),
   html: s(138, 153, "html"),
   java: s(120, 154, "java"),
-  javascript: s(153, 153, "java"),
+  javascript: s(153, 153, "javascript"),
   kotlin: s(153, 153, "kotlin"),
   mysql: s(214, 153, "mysql"),
   nodejs: s(164, 153, "nodejs"),
