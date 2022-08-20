@@ -1,8 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import { MouseEventHandler, useEffect } from "react";
-import { useInfo } from "../lib/InfoContext";
 import { chainInfo } from "../config/chain";
+import { useInfo } from "../lib/InfoContext";
 
 interface Props {
   login: boolean;
@@ -43,7 +43,9 @@ export function Navigation({ login, handleSignout, connectWallet }: Props) {
           {!login && <Image onClick={connectWallet} src="/assets/icon-wallet.svg" alt="" width={36} height={36} />}
           {login && (
             <>
-              <Image src="/assets/icon-cart.svg" alt="" width={36} height={36} />
+              <Link href="/shop">
+                <Image src="/assets/icon-cart.svg" alt="" width={36} height={36} />
+              </Link>
               <Link href="/mypage">
                 <Image src="/assets/icon-user.svg" alt="" width={36} height={36} />
               </Link>

@@ -14,7 +14,7 @@ const sampleLaptop: Laptop = {
   manufacturer: "Texas",
 };
 
-const Mypage: NextPage = () => {
+const Deco: NextPage = () => {
   const { login, loading, keplr, github, handleGithub, handleSignout, connectWallet } = useInfo();
 
   const router = useRouter();
@@ -75,4 +75,4 @@ const Mypage: NextPage = () => {
   );
 };
 
-export default Mypage;
+export default Deco;
