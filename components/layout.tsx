@@ -6,10 +6,11 @@ interface Props {
   children: ReactNode;
   login: boolean;
   handleSignout: MouseEventHandler<HTMLImageElement>;
-  handleSignin: MouseEventHandler<HTMLImageElement>;
+  bech32Address: string;
+  connectWallet: () => Promise<void>;
 }
 
-export function Layout({ children, login, handleSignout, handleSignin }: Props) {
+export function Layout({ children, login, handleSignout, connectWallet }: Props) {
   return (
     <>
       <nav className="flex fixed w-full items-center justify-between p-4 bg-black z-50 h-[64px]">
@@ -17,7 +18,7 @@ export function Layout({ children, login, handleSignout, handleSignin }: Props) 
           <Image src="/assets/logo@3x.png" alt="" width={120} height={30} />
         </div>
         <div className="flex gap-4">
-          <Image onClick={handleSignin} src="/assets/icon-wallet.svg" alt="" width={36} height={36} />
+          <Image onClick={connectWallet} src="/assets/icon-wallet.svg" alt="" width={36} height={36} />
           {login && (
             <>
               <Image src="/assets/icon-cart.svg" alt="" width={36} height={36} />

@@ -1,30 +1,15 @@
 import type { NextPage } from "next";
-import { useState } from "react";
-import { Layout } from "../components/layout";
+import { Navigation } from "../components/navigation";
 import { MainButton } from "../components/mainButton";
+import { useInfo } from "../lib/InfoContext";
 
 const Home: NextPage = () => {
-  const [login, setLogin] = useState(false);
-  const [github, setGithub] = useState(false);
-  const handleSignin = () => {
-    // 화면 분기용 테스트코드
-    // localStorage.setItem("token");
-    console.log("clicked signout");
-    setLogin(true);
-  };
-  const handleSignout = () => {
-    // localStorage.removeItem("token");
-    console.log("clicked signout");
-    setLogin(false);
-  };
-  const handleGithub = () => {
-    console.log("connected github");
-    setGithub(true);
-  };
+  const { login, keplr, github, handleGithub, handleSignout, connectWallet } = useInfo();
 
   return (
     <>
-      <Layout login={login} handleSignout={handleSignout} handleSignin={handleSignin}>
+      <Navigation login={login} handleSignout={handleSignout} connectWallet={connectWallet} />
+      <main className="bg-[url('/assets/bg-image.png')] bg-center bg-cover">
         <section className="z-0 flex flex-col items-center w-full h-screen pt-32">
           {/* center labtop image */}
           <div className="z-50 w-[320px] h-[200px] lg:w-[32vw] lg:h-[20vw] laptop shrink-0"></div>
@@ -64,7 +49,7 @@ const Home: NextPage = () => {
             </div>
           )}
         </section>
-      </Layout>
+      </main>
     </>
   );
 };
