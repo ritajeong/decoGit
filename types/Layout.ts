@@ -12,7 +12,7 @@ export interface Laptop {
 export interface StickerPosition {
   sticker: Sticker;
   // Pixel width of a sticker; its height should be inferred from sticker size
-  width: number;
+  scale: number;
   // Center coordinates of a sticker
   x: number;
   y: number;
