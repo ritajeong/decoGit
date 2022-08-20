@@ -1,0 +1,29 @@
+accounts:
+  - name: alice
+    coins: ["3000000000udeco"]
+  - name: bob
+    coins: ["10000000udeco"]
+  - name: huiwon
+    coins: ["10000000udeco"]
+    address: decogit1w4fdt406qzcd0hx75782u5tus6g8w38swaf2mp
+  - name: rita
+    coins: ["10000000udeco"]
+    address: decogit1twkjaqwpq053aurk4x4m7tu4yckv8qzwnwjr2s
+  - name: susemeee
+    coins: ["10000000udeco"]
+    address: decogit1kct974w48fvnl99ckkt7rpl9djay8zrzfqsjf3
+validator:
+  name: alice
+  staked: "3000000000udeco"
+client:
+  openapi:
+    path: "docs/static/openapi.yml"
+faucet:
+  name: bob
+  coins: ["10000000udeco"]
+genesis:
+  chain_id: "decogit-testnet-1"
+  app_state:
+    staking:
+      params:
+        bond_denom: "udeco"

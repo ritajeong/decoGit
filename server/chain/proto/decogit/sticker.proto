@@ -1,0 +1,13 @@
+syntax = "proto3";
+package decogit.decogit;
+
+option go_package = "decogit/x/decogit/types";
+
+message Sticker {
+  string index = 1; 
+  string name = 2; 
+  string price = 3; 
+  string owner = 4; 
+  
+}
+

@@ -10,7 +10,6 @@ const Mypage: NextPage = () => {
   const { login, loading, keplr, github, handleGithub, handleSignout, connectWallet } = useInfo();
 
   const router = useRouter();
-
   useEffect(() => {
     if (!login && !loading) {
       router.push("/");
@@ -23,15 +22,15 @@ const Mypage: NextPage = () => {
         <div className="overflow-hidden w-full h-[100vh] relative">
           <div className="flex row justify-center gap-[10vw] -ml-[80vw]" style={{ width: "260vw" }}>
             <div className="blur opacity-60">
-              <ProfileCard />
+              <ProfileCard dummy={true} />
             </div>
             <ProfileCard />
             <div className="blur opacity-60">
-              <ProfileCard />
+              <ProfileCard dummy={true} />
             </div>
           </div>
           <div className="blur opacity-60">
-            <ProfileCard />
+            <ProfileCard dummy={true} />
           </div>
         </div>
       )}
