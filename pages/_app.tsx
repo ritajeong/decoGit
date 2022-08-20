@@ -2,6 +2,7 @@ import "../styles/globals.css";
 import "../styles/main.css";
 import type { AppProps } from "next/app";
 import Head from "next/head";
+import { InfoProvider } from "../lib/InfoContext";
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
@@ -12,7 +13,9 @@ function MyApp({ Component, pageProps }: AppProps) {
         <meta name="description" content="Decorate your git profile" />
         {/* <link rel="icon" href="/assets/head-icon.svg" /> */}
       </Head>
-      <Component {...pageProps} />
+      <InfoProvider>
+        <Component {...pageProps} />
+      </InfoProvider>
     </>
   );
 }
