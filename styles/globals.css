@@ -12,18 +12,15 @@
     border: 1px solid #A5A6AC;
     border-radius: 30px;
   }
-  .sticker{
-    position: absolute;
-    background-size: cover;
-    background-position: center;
-    z-index: 10;
-  }
   .icon-sns{
     background-size: cover;
     background-position: center;
     z-index: 50;
     width: 3rem;
     height: 3rem;
+  }
+  .profile{
+    filter: drop-shadow(0px 16px 32px rgba(0, 0, 0, 0.25)) drop-shadow(0px 8px 16px rgba(0, 0, 0, 0.25));
   }
 }
 

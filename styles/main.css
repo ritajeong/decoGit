@@ -1,0 +1,67 @@
+@tailwind components;
+@layer components {
+  .main-sticker-container {
+    position: absolute;
+    min-height: 100vh;
+    overflow: hidden;
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: 10;
+  }
+  .main-sticker {
+    position: absolute;
+    background-size: cover;
+    background-position: center;
+  }
+  .main-sticker-1 {
+    min-width: calc(971 * 0.4px);
+    min-height: calc(247 * 0.4px);
+    width: calc(971 * 0.05vw);
+    height: calc(247 * 0.05vw);
+    max-width: 971px;
+    max-height: 247px;
+    left: 0;
+    bottom: 0;
+    transform: rotate(13deg);
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2)) blur(0.5vw);
+    background-image: url("/assets/logo@3x.png");
+  }
+  .main-sticker-2 {
+    min-width: calc(120 * 0.4px);
+    min-height: calc(120 * 0.4px);
+    width: calc(120 * 0.05vw);
+    height: calc(120 * 0.05vw);
+    max-width: 120px;
+    max-height: 120px;
+    left: 14vw;
+    top: 30vh;
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2)) blur(0.1vw);
+    background-image: url("/assets/sticker/kotlin.svg");
+  }
+  .main-sticker-3 {
+    min-width: calc(195 * 0.4px);
+    min-height: calc(215 * 0.4px);
+    width: calc(195 * 0.05vw);
+    height: calc(215 * 0.05vw);
+    max-width: 195px;
+    max-height: 215px;
+    right: 20vw;
+    top: 10vw;
+    transform: rotate(17deg);
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2)) blur(0.3vw);
+    background-image: url("/assets/sticker/c.svg");
+  }
+  .main-sticker-4 {
+    min-width: calc(300 * 0.4px);
+    min-height: calc(215 * 0.4px);
+    width: calc(300 * 0.05vw);
+    height: calc(215 * 0.05vw);
+    max-width: 300px;
+    max-height: 215px;
+    right: 6vw;
+    bottom: -2vw;
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2)) blur(0.2vw);
+    background-image: url("/assets/sticker/mysql.svg");
+  }
+}
