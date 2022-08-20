@@ -1,33 +1,45 @@
 import type { NextPage } from "next";
+import { useState } from "react";
+import { LayoutWhite } from "../components/layoutWhite";
+import { ProfileCard } from "../components/profileCard";
 // import { useState } from "react";
 
 const Mypage: NextPage = () => {
+  const [login, setLogin] = useState(false);
+  const [github, setGithub] = useState(false);
+  const handleSignin = () => {
+    // 화면 분기용 테스트코드
+    // localStorage.setItem("token");
+    console.log("clicked signout");
+    setLogin(true);
+  };
+  const handleSignout = () => {
+    // localStorage.removeItem("token");
+    console.log("clicked signout");
+    setLogin(false);
+  };
+  const handleGithub = () => {
+    console.log("connected github");
+    setGithub(true);
+  };
   return (
     <>
-      <div className="h-20 bg-black"></div>
-      <section className="flex justify-center bg-[url('/assets/bg-mypage.png')] bg-center bg-cover h-screen">
-        <div className="flex-col items-center profile mt-36  w-[720px] h-[450px] rounded-3xl bg-[url('/assets/bg-image.png')] bg-center bg-cover flex">
-          <div className="bg-[url('/assets/profile-image.png')] bg-center bg-cover w-32 h-32 mt-16 mb-5"></div>
-          <p className="text-5xl font-bold">username</p>
-          <div className="pt-6 text-base font-bold">
-            <div className="flex justify-center">
-              <span className="bg-[url('/assets/github/planet.svg')] bg-center bg-cover w-6 h-6"></span>
-              <span className="pl-2">1024</span>
-              <span className="ml-6 bg-[url('/assets/github/sticker.svg')] bg-center bg-cover w-6 h-6"></span>
-              <span className="pl-2">64</span>
+      <LayoutWhite login={login} handleSignout={handleSignout} handleSignin={handleSignin}>
+        <div className="overflow-hidden w-full h-[100vh] relative">
+          <div className="flex row justify-center gap-[10vw] -ml-[80vw]" style={{ width: "260vw" }}>
+            <div className="blur opacity-60">
+              <ProfileCard />
             </div>
-            <div className="flex justify-center pt-4">
-              <span className="bg-[url('/assets/github/commit.svg')] bg-center bg-cover w-6 h-6"></span>
-              <span className="pl-2">512</span>
-              <span className="ml-6 bg-[url('/assets/github/pull-request.svg')] bg-center bg-cover w-6 h-6"></span>
-              <span className="pl-2">8</span>
-              <span className="ml-6 bg-[url('/assets/github/merge.svg')] bg-center bg-cover w-6 h-6"></span>
-              <span className="pl-2">2</span>
+            <ProfileCard />
+            <div className="blur opacity-60">
+              <ProfileCard />
             </div>
           </div>
-          <p className="pt-12 text-[#9B9B9B]">WALLET ACCOUNT : 123123125423SADFIAWEOJI</p>
+          <div className="blur opacity-60">
+            <ProfileCard />
+          </div>
         </div>
-      </section>
+      </LayoutWhite>
     </>
   );
 };
