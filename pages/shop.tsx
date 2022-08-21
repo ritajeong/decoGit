@@ -7,6 +7,7 @@ import Modal from "../components/modal";
 import { Navigation } from "../components/navigation";
 import { useSnackbar } from "../components/snackbar/SnackbarContext";
 import { stickers as localStickers } from "../components/sticker/stickers";
+import { chainInfo } from "../config/chain";
 import { useAddress } from "../hooks/useAddress";
 import { useSigningClient } from "../hooks/useCosmJSClient";
 import { useInfo } from "../lib/InfoContext";
@@ -46,7 +47,7 @@ const Shop: NextPage = () => {
 
   useEffect(() => {
     axios
-      .get<Response>("http://5.server.susuyo.ai:1317/decogit/decogit/sticker", {})
+      .get<Response>(`${chainInfo.rest}/decogit/decogit/sticker`, {})
       .then((res) => {
         setStickers(res.data);
       })

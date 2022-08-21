@@ -6,6 +6,7 @@ import Editor from "../components/editor/Editor";
 import { MainButton } from "../components/mainButton";
 import { Navigation } from "../components/navigation";
 import { stickers as localStickers } from "../components/sticker/stickers";
+import { chainInfo } from "../config/chain";
 import { useAddress } from "../hooks/useAddress";
 import { useInfo } from "../lib/InfoContext";
 import { Laptop, LaptopLayout } from "../types/Layout";
@@ -43,7 +44,7 @@ const Deco: NextPage = () => {
 
   useEffect(() => {
     axios
-      .get<Response>("http://5.server.susuyo.ai:1317/decogit/decogit/sticker", {})
+      .get<Response>(`${chainInfo.rest}/decogit/decogit/sticker`, {})
       .then((res) => {
         setStickers(res.data);
       })
