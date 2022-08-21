@@ -57,3 +57,10 @@ These stickers are put on to your virtual laptop, then can be shared as an image
 
 https://user-images.githubusercontent.com/4417431/185774110-ee73360b-de79-48d3-bd80-418314d7e2a0.mp4
 
+## The Team
+
+* Huiwon Choi <havana723@korea.ac.kr> / PM; Product Designer; Frontend Engineer
+* Jinju Jeong <ritajeong.dev@gmail.com> / PM; Frontend Engineer
+* Suho Lee <bird@susuyo.ai> / PM; Backend Engineer
+* Suhyun Park <me@shiftpsh.com> / PM; Product Designer; Frontend Engineer
+
