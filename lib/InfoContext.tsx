@@ -79,8 +79,7 @@ export const InfoProvider = ({ children }: Props) => {
   };
   const fetchGithub = async () => {
     const res = await axios.get("http://5.server.susuyo.ai:3030/api/accounts/" + address);
-    console.log(res.data);
-
+    setGithub(true);
     setGithubInfo({ name: res.data.name, url: res.data.avatar_url });
   };
 
@@ -93,7 +92,7 @@ export const InfoProvider = ({ children }: Props) => {
 
   return (
     <InfoContext.Provider
-      value={{ login, keplr, github, githubInfo, handleGithub, handleSignout, connectWallet, fetchGithub }}
+      value={{ loading, login, keplr, github, githubInfo, handleGithub, handleSignout, connectWallet, fetchGithub }}
     >
       {children}
     </InfoContext.Provider>

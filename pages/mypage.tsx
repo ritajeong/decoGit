@@ -5,10 +5,13 @@ import { useEffect } from "react";
 import { Navigation } from "../components/navigation";
 import { useInfo } from "../lib/InfoContext";
 import { ProfileCard } from "../components/profileCard";
+import { useAddress } from "../hooks/useAddress";
 
 const Mypage: NextPage = () => {
-  const { login, loading, github, githubInfo, handleSignout, connectWallet, fetchGithub } = useInfo();
+  const { login, loading, keplr, github, githubInfo, handleSignout, connectWallet, fetchGithub } = useInfo();
   const router = useRouter();
+  const address = useAddress(keplr);
+
   useEffect(() => {
     if (!login && !loading) {
       router.push("/");
@@ -16,8 +19,10 @@ const Mypage: NextPage = () => {
   }, [login, loading]);
 
   useEffect(() => {
-    if (github) fetchGithub();
-  }, []);
+    if (login && address) {
+      fetchGithub();
+    }
+  }, [login, address])
 
   return (
     <>
