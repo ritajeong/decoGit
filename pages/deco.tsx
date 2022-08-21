@@ -84,7 +84,7 @@ const Deco: NextPage = () => {
           </MainButton>
           <div className="flex justify-center">
             <div className="bg-[url('/assets/bg-image.png')] bg-cover w-[840px] h-[20vh] align-center absolute bottom-0 overflow-hidden">
-              <div className="flex row overflow-x-scroll h-full gap-4">
+              <div className="flex h-full gap-4 pl-4 overflow-x-scroll row">
                 {stickers
                   ? stickers.sticker
                       .filter(({ owner }) => owner === address)
