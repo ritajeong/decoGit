@@ -3,6 +3,8 @@ import { ReactNode, createContext, useState, useContext, Dispatch, SetStateActio
 import { Keplr } from "@keplr-wallet/types";
 import { getKeplrFromWindow } from "@keplr-wallet/stores";
 import { chainInfo } from "../config/chain";
+import { useAddress } from "../hooks/useAddress";
+import axios from "axios";
 
 interface Props {
   children: ReactNode;
@@ -17,17 +19,22 @@ export const useInfo = () =>
     login: boolean;
     loading: boolean;
     github: boolean;
+    githubInfo: { name: string; url: string };
     keplr: Keplr | null;
     handleGithub: () => void;
     handleSignout: () => void;
     connectWallet: () => Promise<void>;
+    fetchGithub: () => Promise<void>;
   }>(InfoContext as any);
 
 export const InfoProvider = ({ children }: Props) => {
   const [login, setLogin] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
   const [github, setGithub] = useState<boolean>(false);
+  const [githubInfo, setGithubInfo] = useState<object>({ name: "", url: "" });
   const [keplr, setKeplr] = useState<Keplr | null>(null);
+
+  const address = useAddress(keplr);
 
   const connectWallet = async () => {
     setLoading(true);
@@ -56,11 +63,25 @@ export const InfoProvider = ({ children }: Props) => {
     localStorage?.removeItem(KeyAccountAutoConnect);
     setKeplr(null);
     setLogin(false);
+    setGithub(false);
     console.log("logout success");
   };
   const handleGithub = () => {
-    console.log("connected github");
+    axios
+      .post("http://5.server.susuyo.ai:3030/api/accounts/" + address, { redirectTo: window.location.href })
+      .then((res) => {
+        if (!res.data.exists) {
+          window.location.replace(res.data.redirectTo);
+        }
+      });
     setGithub(true);
+    console.log("connected github");
+  };
+  const fetchGithub = async () => {
+    const res = await axios.get("http://5.server.susuyo.ai:3030/api/accounts/" + address);
+    console.log(res.data);
+
+    setGithubInfo({ name: res.data.name, url: res.data.avatar_url });
   };
 
   useEffect(() => {
@@ -72,7 +93,7 @@ export const InfoProvider = ({ children }: Props) => {
 
   return (
     <InfoContext.Provider
-      value={{ login, keplr, github, handleGithub, handleSignout, connectWallet }}
+      value={{ login, keplr, github, githubInfo, handleGithub, handleSignout, connectWallet, fetchGithub }}
     >
       {children}
     </InfoContext.Provider>
