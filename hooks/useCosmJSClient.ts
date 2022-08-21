@@ -26,7 +26,7 @@ export function useSigningClient(keplr: Keplr | null) {
     const client = await SigningStargateClient.connectWithSigner(
       chainInfo.rpc,
       offlineSigner,
-      { registry: myRegistry },
+      { registry: myRegistry as any },
     );
 
     setClient(client);
