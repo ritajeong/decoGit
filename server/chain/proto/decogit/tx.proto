@@ -8,16 +8,27 @@ option go_package = "decogit/x/decogit/types";
 // Msg defines the Msg service.
 service Msg {
       rpc BuySticker(MsgBuySticker) returns (MsgBuyStickerResponse);
+  rpc CreateSticker(MsgCreateSticker) returns (MsgCreateStickerResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }
 
 message MsgBuySticker {
   string creator = 1;
-  string sticker = 2;
+  string stickerId = 2;
   string bid = 3;
 }
 
 message MsgBuyStickerResponse {
+}
+
+message MsgCreateSticker {
+  string creator = 1;
+  string sticker = 2;
+  string price = 3;
+}
+
+message MsgCreateStickerResponse {
+  string id = 1;
 }
 
 // this line is used by starport scaffolding # proto/tx/message

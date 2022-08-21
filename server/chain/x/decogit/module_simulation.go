@@ -28,6 +28,10 @@ const (
 	// TODO: Determine the simulation weight value
 	defaultWeightMsgBuySticker int = 100
 
+	opWeightMsgCreateSticker = "op_weight_msg_create_sticker"
+	// TODO: Determine the simulation weight value
+	defaultWeightMsgCreateSticker int = 100
+
 	// this line is used by starport scaffolding # simapp/module/const
 )
 
@@ -71,6 +75,17 @@ func (am AppModule) WeightedOperations(simState module.SimulationState) []simtyp
 	operations = append(operations, simulation.NewWeightedOperation(
 		weightMsgBuySticker,
 		decogitsimulation.SimulateMsgBuySticker(am.accountKeeper, am.bankKeeper, am.keeper),
+	))
+
+	var weightMsgCreateSticker int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgCreateSticker, &weightMsgCreateSticker, nil,
+		func(_ *rand.Rand) {
+			weightMsgCreateSticker = defaultWeightMsgCreateSticker
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgCreateSticker,
+		decogitsimulation.SimulateMsgCreateSticker(am.accountKeeper, am.bankKeeper, am.keeper),
 	))
 
 	// this line is used by starport scaffolding # simapp/module/operation
