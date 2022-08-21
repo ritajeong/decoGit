@@ -3,6 +3,7 @@ import "../styles/main.css";
 import type { AppProps } from "next/app";
 import Head from "next/head";
 import { InfoProvider } from "../lib/InfoContext";
+import { SnackbarProvider } from "../components/snackbar/SnackbarContext";
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
@@ -13,9 +14,11 @@ function MyApp({ Component, pageProps }: AppProps) {
         <meta name="description" content="Decorate your git profile" />
         {/* <link rel="icon" href="/assets/head-icon.svg" /> */}
       </Head>
-      <InfoProvider>
-        <Component {...pageProps} />
-      </InfoProvider>
+      <SnackbarProvider>
+        <InfoProvider>
+          <Component {...pageProps} />
+        </InfoProvider>
+      </SnackbarProvider>
     </>
   );
 }
