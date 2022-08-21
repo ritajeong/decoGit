@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@cosmjs/stargate": "^0.28.13",
+    "@emotion/react": "^11.10.0",
     "@emotion/styled": "^11.10.0",
     "@keplr-wallet/cosmos": "^0.10.17",
     "@keplr-wallet/stores": "^0.10.17",

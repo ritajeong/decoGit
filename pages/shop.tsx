@@ -1,7 +1,8 @@
 import axios from "axios";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
+import Modal from "../components/modal";
 import { Navigation } from "../components/navigation";
 import { stickers as localStickers } from "../components/sticker/stickers";
 import { useInfo } from "../lib/InfoContext";
@@ -46,8 +47,45 @@ const Shop: NextPage = () => {
       });
   }, []);
 
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [modalContent, setModalContent] = useState<ReactNode>(null);
+
+  function handlePurchase(): void {
+    setIsModalOpen(false);
+  }
+
+  function handleOnClick(sticker: StickerResponse): void {
+    setModalContent(
+      <>
+        <div className="p-2 flex flex-col items-center">
+          <div
+            className="h-[128px] w-[128px] bg-contain bg-no-repeat bg-center"
+            style={{
+              backgroundImage: `url('/assets/${localStickers[sticker.name as keyof typeof localStickers].url}')`,
+            }}
+          />
+          <div className="flex justify-center">
+            <span className="bg-[url('/assets/github/planet.svg')] bg-center bg-cover w-6 h-6"></span>
+            <span className="pl-2">{parseDeco(sticker.price) / 1000000}</span>
+          </div>
+          <div className="h-8" />
+          <button className="p-4 w-[360px] h-[80px] relative" onClick={() => handlePurchase()}>
+            <div className="absolute top-0 left-0 w-[360px] h-[80px] bg-[url('/assets/bg-image.png')] bg-center bg-cover">
+              <p className="pt-6 text-3xl font-black text-black uppercase">purchase</p>
+            </div>
+          </button>
+          <div className="h-8" />
+        </div>
+      </>,
+    );
+    setIsModalOpen(true);
+  }
+
   return (
     <>
+      <Modal title="" isOpen={isModalOpen} width={480} onClose={() => setIsModalOpen(false)}>
+        {modalContent}
+      </Modal>
       <Navigation login={login} handleSignout={handleSignout} connectWallet={connectWallet} />
       <main className="bg-[url('/assets/bg-image.png')] bg-center bg-cover">
         <section className="z-0 flex flex-col items-center w-full h-screen pt-32">
@@ -58,22 +96,23 @@ const Shop: NextPage = () => {
                 {stickers
                   ? stickers.sticker
                       .filter(({ owner }) => owner === "")
-                      .map(({ index, name, price }) => (
+                      .map((s) => (
                         <div
                           className="w-fill h-[160px] p-2 shrink-0 mt-4 hover:bg-[#fff1f8] flex flex-col items-center"
-                          key={index}
+                          key={s.index}
+                          onClick={() => handleOnClick(s)}
                         >
                           <div
                             className="h-[128px] w-[128px] bg-contain bg-no-repeat bg-center"
                             style={{
                               backgroundImage: `url('/assets/${
-                                localStickers[name as keyof typeof localStickers].url
+                                localStickers[s.name as keyof typeof localStickers].url
                               }')`,
                             }}
                           />
                           <div className="flex justify-center">
                             <span className="bg-[url('/assets/github/planet.svg')] bg-center bg-cover w-6 h-6"></span>
-                            <span className="pl-2">{parseDeco(price) / 1000000}</span>
+                            <span className="pl-2">{parseDeco(s.price) / 1000000}</span>
                           </div>
                         </div>
                       ))
