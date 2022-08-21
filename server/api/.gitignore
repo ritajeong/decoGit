@@ -132,3 +132,4 @@ dist
 artifacts/
 
 decogit.faucet.mnemonic.key
+db.json

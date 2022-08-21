@@ -3,9 +3,11 @@ import Fastify, { FastifyRequest } from "fastify"
 import { readFile, writeFile } from "fs/promises"
 import axios from "axios"
 import qs from "querystring"
+import cors from "@fastify/cors"
+
 import { SigningStargateClient, StargateClient } from "@cosmjs/stargate"
 
-import {getSignerFromMnemonic} from "./helper"
+import { getSignerFromMnemonic } from "./helper"
 
 import { IDatabase } from "./schema"
 import * as config from "./config"
@@ -22,7 +24,7 @@ const context: {
 } = {
   decoGitClient: null,
   decoGitFaucetClient: null,
-  faucetAddress: ''
+  faucetAddress: "",
 }
 
 // Require the frameworStargateClientk and instantiate it
@@ -31,6 +33,9 @@ const fastify = Fastify({ logger: true })
 type AccountsAccountIdRequestParams = FastifyRequest<{
   Params: {
     accountId: string
+  }
+  Body: {
+    redirectTo: string
   }
 }>
 
@@ -56,9 +61,7 @@ type GHAuthRequestParams = FastifyRequest<{
   }
 }>
 
-
 async function sendDecoTo(addr: string, amount: string) {
-
   return context.decoGitFaucetClient!.sendTokens(
     context.faucetAddress,
     addr,
@@ -68,7 +71,6 @@ async function sendDecoTo(addr: string, amount: string) {
       gas: "200000",
     }
   )
-
 }
 
 fastify.get("/test", async (request, reply) => {
@@ -96,13 +98,20 @@ fastify.get(
 fastify.post(
   "/api/accounts/:accountId",
   async (request: AccountsAccountIdRequestParams, reply) => {
-    if (typeof db[request.params.accountId] !== "undefined") {
-      return reply.status(403).send({
-        success: false,
-      })
+    const existingAccount = db[request.params.accountId]
+
+    const oAuthRedirUrl = encodeURIComponent(
+      `http://${request.headers.host}/api/external/github/auth`
+    )
+
+    if (existingAccount?.account) {
+      return {
+        success: true,
+        exists: true,
+      }
     }
 
-    const redirectTo = request.headers.host ?? null
+    const { redirectTo } = request.body
     const token = randomUUID()
 
     db[request.params.accountId] = {
@@ -112,58 +121,57 @@ fastify.post(
     }
     await write()
 
-    return { success: true, redirectTo: config.githubApp.buildRedirUrl(token) }
+    return {
+      success: true,
+      redirectTo: config.githubApp.buildRedirUrl(token, oAuthRedirUrl),
+    }
   }
 )
 
 fastify.get(
   "/api/external/github/auth",
   async (request: GHAuthRequestParams, reply) => {
-    const { code, installation_id, setup_action, state } = request.query
+    const { code, state } = request.query
 
     let success = false
-    if (setup_action === "install") {
-      try {
-        const { client_id, client_secret, oAuthUrl } = config.githubApp
+    try {
+      const { client_id, client_secret, oAuthUrl } = config.githubApp
 
-        const response = await axios.post(oAuthUrl, {
-          client_id,
-          client_secret,
-          code,
-        })
+      const response = await axios.post(oAuthUrl, {
+        client_id,
+        client_secret,
+        code,
+      })
 
-        const { access_token } = qs.parse(response.data)
+      const { access_token } = qs.parse(response.data)
 
-        const response2 = await axios.get("https://api.github.com/user", {
-          headers: {
-            Authorization: `Token ${access_token}`,
-          },
-        })
+      const response2 = await axios.get("https://api.github.com/user", {
+        headers: {
+          Authorization: `Token ${access_token}`,
+        },
+      })
 
-        const { id: userId, name, avatar_url } = response2.data
+      const { id: userId, name, avatar_url } = response2.data
 
-        const tempInstance = Object.values(db).find((v) => v.token === state)
+      const tempInstance = Object.values(db).find((v) => v.token === state)
 
-        if (!tempInstance) {
-          fastify.log.error(
-            `gh userId=${userId} does not have any temp session`
-          )
-        } else {
-          tempInstance.account = {
-            id: userId,
-            name,
-            avatar_url,
-          }
-          await write()
-          success = true
-
-          if (tempInstance.redirectTo) {
-            return reply.redirect(301, `http://${tempInstance.redirectTo}`)
-          }
+      if (!tempInstance) {
+        fastify.log.error(`gh userId=${userId} does not have any temp session`)
+      } else {
+        tempInstance.account = {
+          id: userId,
+          name,
+          avatar_url,
         }
-      } catch (err) {
-        fastify.log.error(err)
+        await write()
+        success = true
+
+        if (tempInstance.redirectTo) {
+          return reply.redirect(301, tempInstance.redirectTo)
+        }
       }
+    } catch (err) {
+      fastify.log.error(err)
     }
     return { success }
   }
@@ -223,13 +231,15 @@ const start = async () => {
   }
   try {
     // blockchain client init
-    context.decoGitClient = await StargateClient.connect(config.decoGitChain.rpc)
+    context.decoGitClient = await StargateClient.connect(
+      config.decoGitChain.rpc
+    )
     fastify.log.info(await context.decoGitClient.getChainId())
     const signer = await getSignerFromMnemonic()
     context.decoGitFaucetClient = await SigningStargateClient.connectWithSigner(
       config.decoGitChain.rpc,
       signer
-    );
+    )
 
     // blockchain signed client (faucet) init
     const { address } = (await signer.getAccounts())[0]
@@ -237,6 +247,7 @@ const start = async () => {
     fastify.log.info(await context.decoGitClient.getAllBalances(address))
 
     // fastify listen
+    await fastify.register(cors)
     await fastify.listen({ port, host: "0.0.0.0" })
   } catch (err) {
     fastify.log.error(err)

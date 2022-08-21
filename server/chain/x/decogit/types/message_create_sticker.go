@@ -5,27 +5,27 @@ import (
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
 
-const TypeMsgBuySticker = "buy_sticker"
+const TypeMsgCreateSticker = "create_sticker"
 
-var _ sdk.Msg = &MsgBuySticker{}
+var _ sdk.Msg = &MsgCreateSticker{}
 
-func NewMsgBuySticker(creator string, stickerId string, bid string) *MsgBuySticker {
-	return &MsgBuySticker{
+func NewMsgCreateSticker(creator string, sticker string, price string) *MsgCreateSticker {
+	return &MsgCreateSticker{
 		Creator: creator,
-		StickerId: stickerId,
-		Bid:     bid,
+		Sticker: sticker,
+		Price:   price,
 	}
 }
 
-func (msg *MsgBuySticker) Route() string {
+func (msg *MsgCreateSticker) Route() string {
 	return RouterKey
 }
 
-func (msg *MsgBuySticker) Type() string {
-	return TypeMsgBuySticker
+func (msg *MsgCreateSticker) Type() string {
+	return TypeMsgCreateSticker
 }
 
-func (msg *MsgBuySticker) GetSigners() []sdk.AccAddress {
+func (msg *MsgCreateSticker) GetSigners() []sdk.AccAddress {
 	creator, err := sdk.AccAddressFromBech32(msg.Creator)
 	if err != nil {
 		panic(err)
@@ -33,12 +33,12 @@ func (msg *MsgBuySticker) GetSigners() []sdk.AccAddress {
 	return []sdk.AccAddress{creator}
 }
 
-func (msg *MsgBuySticker) GetSignBytes() []byte {
+func (msg *MsgCreateSticker) GetSignBytes() []byte {
 	bz := ModuleCdc.MustMarshalJSON(msg)
 	return sdk.MustSortJSON(bz)
 }
 
-func (msg *MsgBuySticker) ValidateBasic() error {
+func (msg *MsgCreateSticker) ValidateBasic() error {
 	_, err := sdk.AccAddressFromBech32(msg.Creator)
 	if err != nil {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)
