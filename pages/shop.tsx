@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import { ReactNode, useEffect, useState } from "react";
 import Modal from "../components/modal";
 import { Navigation } from "../components/navigation";
+import { useSnackbar } from "../components/snackbar/SnackbarContext";
 import { stickers as localStickers } from "../components/sticker/stickers";
 import { useInfo } from "../lib/InfoContext";
 
@@ -25,6 +26,8 @@ function parseDeco(s: string): number {
 
 const Shop: NextPage = () => {
   const { login, loading, keplr, github, handleGithub, handleSignout, connectWallet } = useInfo();
+
+  const snackbar = useSnackbar();
 
   const router = useRouter();
 
@@ -52,6 +55,7 @@ const Shop: NextPage = () => {
 
   function handlePurchase(): void {
     setIsModalOpen(false);
+    snackbar.enqueue({ message: "Purchase completed!", severity: "success" });
   }
 
   function handleOnClick(sticker: StickerResponse): void {
