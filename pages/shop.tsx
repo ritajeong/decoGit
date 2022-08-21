@@ -1,3 +1,4 @@
+import { MsgSendEncodeObject } from "@cosmjs/stargate";
 import axios from "axios";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
@@ -6,6 +7,8 @@ import Modal from "../components/modal";
 import { Navigation } from "../components/navigation";
 import { useSnackbar } from "../components/snackbar/SnackbarContext";
 import { stickers as localStickers } from "../components/sticker/stickers";
+import { useAddress } from "../hooks/useAddress";
+import { useSigningClient } from "../hooks/useCosmJSClient";
 import { useInfo } from "../lib/InfoContext";
 
 interface StickerResponse {
@@ -24,7 +27,10 @@ function parseDeco(s: string): number {
 }
 
 const Shop: NextPage = () => {
-  const { login, loading, keplr, github, handleGithub, handleSignout, connectWallet } = useInfo();
+  const { login, loading, keplr } = useInfo();
+
+  const signingClient = useSigningClient(keplr)
+  const address = useAddress(keplr)
 
   const snackbar = useSnackbar();
 
@@ -52,9 +58,32 @@ const Shop: NextPage = () => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [modalContent, setModalContent] = useState<ReactNode>(null);
 
-  function handlePurchase(): void {
+  function handlePurchase(sticker: StickerResponse): void {
     setIsModalOpen(false);
-    snackbar.enqueue({ message: "Purchase completed!", severity: "success" });
+
+    async function createPurchaseTransaction() {
+      const sendMsg = [{
+        typeUrl: "/decogit.decogit.MsgBuySticker",
+        value: {
+          creator: address,
+          stickerId: sticker.index,
+          bid: sticker.price,
+        },
+      }]
+
+      const fee = {
+        amount: [{ denom: "udeco", amount: "500" }],
+        gas: "200000",
+      }
+
+      await signingClient?.signAndBroadcast(address, sendMsg, fee)
+    }
+
+    createPurchaseTransaction().then(() => {
+      snackbar.enqueue({ message: "Purchase completed!", severity: "success" });
+    })
+
+
   }
 
   function handleOnClick(sticker: StickerResponse): void {
@@ -72,7 +101,7 @@ const Shop: NextPage = () => {
             <span className="pl-2">{parseDeco(sticker.price) / 1000000}</span>
           </div>
           <div className="h-8" />
-          <button className="p-4 w-[360px] h-[80px] relative" onClick={() => handlePurchase()}>
+          <button className="p-4 w-[360px] h-[80px] relative" onClick={() => handlePurchase(sticker)}>
             <div className="absolute top-0 left-0 w-[360px] h-[80px] bg-[url('/assets/bg-image.png')] bg-center bg-cover">
               <p className="pt-6 text-3xl font-black text-black uppercase">purchase</p>
             </div>

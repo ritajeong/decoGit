@@ -22,9 +22,11 @@
     "lodash": "^4.17.21",
     "next": "12.1.6",
     "polished": "^4.2.2",
+    "protoc": "^1.0.4",
     "react": "18.1.0",
     "react-dom": "18.1.0",
-    "react-icons": "^4.4.0"
+    "react-icons": "^4.4.0",
+    "ts-proto": "^1.122.0"
   },
   "devDependencies": {
     "@types/node": "17.0.35",
