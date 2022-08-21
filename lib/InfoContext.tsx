@@ -5,6 +5,7 @@ import { getKeplrFromWindow } from "@keplr-wallet/stores";
 import { chainInfo } from "../config/chain";
 import { useAddress } from "../hooks/useAddress";
 import axios from "axios";
+import { apiServerHost } from "../config/apiserver";
 
 interface Props {
   children: ReactNode;
@@ -68,7 +69,7 @@ export const InfoProvider = ({ children }: Props) => {
   };
   const handleGithub = () => {
     axios
-      .post("http://5.server.susuyo.ai:3030/api/accounts/" + address, { redirectTo: window.location.href })
+      .post(`${apiServerHost}/api/accounts/` + address, { redirectTo: window.location.href })
       .then((res) => {
         if (!res.data.exists) {
           window.location.replace(res.data.redirectTo);
@@ -78,7 +79,7 @@ export const InfoProvider = ({ children }: Props) => {
     console.log("connected github");
   };
   const fetchGithub = async () => {
-    const res = await axios.get("http://5.server.susuyo.ai:3030/api/accounts/" + address);
+    const res = await axios.get(`${apiServerHost}/api/accounts/` + address);
     setGithub(true);
     setGithubInfo({ name: res.data.name, url: res.data.avatar_url });
   };
