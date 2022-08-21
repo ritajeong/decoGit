@@ -1,16 +1,10 @@
 import Image from "next/image";
 import Link from "next/link";
-import { MouseEventHandler, useEffect } from "react";
-import { chainInfo } from "../config/chain";
 import { useInfo } from "../lib/InfoContext";
 
-interface Props {
-  login: boolean;
-  handleSignout: MouseEventHandler<HTMLImageElement>;
-  connectWallet: () => Promise<void>;
-}
+export const Navigation: React.FC = () => {
+  const { login, keplr, github, handleGithub, handleSignout, connectWallet } = useInfo();
 
-export function Navigation({ login, handleSignout, connectWallet }: Props) {
   return (
     <>
       <nav className="flex fixed w-full items-center justify-between p-4 bg-black z-50 h-[64px]">
@@ -33,7 +27,7 @@ export function Navigation({ login, handleSignout, connectWallet }: Props) {
                 <Image src="/assets/icon-user.svg" alt="" width={36} height={36} />
               </Link>
               <Link href="/">
-                <Image onClick={handleSignout} src="/assets/icon-logout.svg" alt="" width={36} height={36}></Image>
+                <Image onClick={handleSignout} src="/assets/icon-logout.svg" alt="" width={36} height={36} />
               </Link>
             </>
           )}
@@ -41,4 +35,4 @@ export function Navigation({ login, handleSignout, connectWallet }: Props) {
       </nav>
     </>
   );
-}
+};

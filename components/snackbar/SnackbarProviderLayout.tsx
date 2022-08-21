@@ -1,4 +1,4 @@
-import { css, keyframes, useTheme } from "@emotion/react";
+import { css, keyframes } from "@emotion/react";
 import styled from "@emotion/styled";
 import _ from "lodash";
 import { transparentize } from "polished";
@@ -10,9 +10,9 @@ import {
   IoCloseCircleOutline,
   IoInformationCircleOutline,
   IoRefreshCircleOutline,
-  IoWarningOutline,
+  IoWarningOutline
 } from "react-icons/io5";
-import { SnackbarSeverity, SnackbarItem, SnackbarItemState } from "./SnackbarContext";
+import { SnackbarItem, SnackbarItemState, SnackbarSeverity } from "./SnackbarContext";
 
 // Moal code brought from solved.ac
 
