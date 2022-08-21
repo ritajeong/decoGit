@@ -12,7 +12,8 @@ function MyApp({ Component, pageProps }: AppProps) {
         <title>decoGit</title>
         <meta name="author" content="decoGit" />
         <meta name="description" content="Decorate your git profile" />
-        {/* <link rel="icon" href="/assets/head-icon.svg" /> */}
+        <meta httpEquiv="Content-Security-Policy" content="upgrade-insecure-requests" />
+        <link rel="icon" href="/assets/icon-deco.svg" />
       </Head>
       <SnackbarProvider>
         <InfoProvider>
