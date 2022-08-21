@@ -7,7 +7,7 @@
 </p>
 
 <p align="center">
-Junction Asia 2022 &middot; Team decoGit &middot; Chainapsis Track
+Junction Asia 2022 &middot; Team decoGit &middot; Chainapsis Track Finalist (runner-up)
 </p>
 
 ## Overview
