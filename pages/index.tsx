@@ -15,7 +15,7 @@ const Home: NextPage = () => {
 
   return (
     <>
-      <Navigation login={login} handleSignout={handleSignout} connectWallet={connectWallet} />
+      <Navigation />
       <main className="bg-[url('/assets/bg-image.png')] bg-center bg-cover">
         <section className="z-0 flex flex-col items-center w-full h-screen pt-32">
           {/* center labtop image */}

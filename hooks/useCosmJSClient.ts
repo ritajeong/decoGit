@@ -1,6 +1,6 @@
 import { SigningStargateClient, StargateClient } from "@cosmjs/stargate";
 import { Keplr } from "@keplr-wallet/types";
-import { chainInfo } from "../configs/chain";
+import { chainInfo } from "../config/chain";
 import { useEffect, useState } from "react";
 
 export function useSigningClient(keplr: Keplr | null) {

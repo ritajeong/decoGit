@@ -33,7 +33,7 @@ const Deco: NextPage = () => {
 
   return (
     <>
-      <Navigation login={login} handleSignout={handleSignout} connectWallet={connectWallet} />
+      <Navigation />
       {login && (
         <div className="overflow-hidden w-full h-[100vh] relative text-center">
           <div className="flex justify-center pt-32">

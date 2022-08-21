@@ -21,7 +21,7 @@ const Mypage: NextPage = () => {
 
   return (
     <>
-      <Navigation login={login} handleSignout={handleSignout} connectWallet={connectWallet} />
+      <Navigation />
       {login && (
         <div className="overflow-hidden w-full h-[100vh] relative">
           <div className="flex row justify-center gap-[10vw] -ml-[80vw]" style={{ width: "260vw" }}>
