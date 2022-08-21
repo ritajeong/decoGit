@@ -76,13 +76,16 @@ const Shop: NextPage = () => {
         gas: "200000",
       }
 
-      await signingClient?.signAndBroadcast(address, sendMsg, fee)
+      return signingClient?.signAndBroadcast(address, sendMsg, fee)
     }
 
     createPurchaseTransaction().then(() => {
       snackbar.enqueue({ message: "Purchase completed!", severity: "success" });
     })
-
+    .catch(err => {
+      console.error(err)
+      snackbar.enqueue({ message: "Purchase error!", severity: "error" });
+    })
 
   }
 
