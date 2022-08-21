@@ -1,10 +1,12 @@
+import axios from "axios";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import Editor from "../components/editor/Editor";
 import { MainButton } from "../components/mainButton";
 import { Navigation } from "../components/navigation";
-import { stickers } from "../components/sticker/stickers";
+import { stickers as localStickers } from "../components/sticker/stickers";
+import { useAddress } from "../hooks/useAddress";
 import { useInfo } from "../lib/InfoContext";
 import { Laptop, LaptopLayout } from "../types/Layout";
 import { Sticker } from "../types/Sticker";
@@ -14,8 +16,20 @@ const sampleLaptop: Laptop = {
   manufacturer: "Texas",
 };
 
+interface StickerResponse {
+  index: string;
+  name: string;
+  price: string;
+  owner: string;
+}
+
+interface Response {
+  sticker: StickerResponse[];
+}
+
 const Deco: NextPage = () => {
   const { login, loading, keplr, github, handleGithub, handleSignout, connectWallet } = useInfo();
+  const address = useAddress(keplr);
 
   const router = useRouter();
 
@@ -25,11 +39,24 @@ const Deco: NextPage = () => {
     }
   }, [login, loading]);
 
+  const [stickers, setStickers] = useState<Response | null>(null);
+
+  useEffect(() => {
+    axios
+      .get<Response>("http://5.server.susuyo.ai:1317/decogit/decogit/sticker", {})
+      .then((res) => {
+        setStickers(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+
   const [editorState, setEditorState] = useState<LaptopLayout>({
     laptop: sampleLaptop,
     stickers: [],
   });
-  const [currentSticker, setCurrentSticker] = useState<Sticker>(stickers.python);
+  const [currentSticker, setCurrentSticker] = useState<Sticker | null>(null);
 
   return (
     <>
@@ -58,14 +85,22 @@ const Deco: NextPage = () => {
           <div className="flex justify-center">
             <div className="bg-[url('/assets/bg-image.png')] bg-cover w-[840px] h-[20vh] align-center absolute bottom-0 overflow-hidden">
               <div className="flex row overflow-x-scroll h-full gap-4">
-                {Object.entries(stickers).map(([key, sticker]) => (
-                  <div
-                    className="h-[15vh] w-[15vh] bg-contain bg-no-repeat bg-center shrink-0 mt-4"
-                    onClick={() => setCurrentSticker(sticker)}
-                    key={key}
-                    style={{ backgroundImage: `url('/assets/${sticker.url}')` }}
-                  />
-                ))}
+                {stickers
+                  ? stickers.sticker
+                      .filter(({ owner }) => owner === address)
+                      .map((s) => (
+                        <div
+                          className="h-[15vh] w-[15vh] bg-contain bg-no-repeat bg-center shrink-0 mt-4"
+                          onClick={() => setCurrentSticker(localStickers[s.name as keyof typeof localStickers])}
+                          key={s.index}
+                          style={{
+                            backgroundImage: `url('/assets/${
+                              localStickers[s.name as keyof typeof localStickers].url
+                            }')`,
+                          }}
+                        />
+                      ))
+                  : null}
               </div>
             </div>
           </div>
